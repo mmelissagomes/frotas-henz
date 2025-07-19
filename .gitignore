@@ -1,7 +1,36 @@
+
 .idea/
-*.key
-*.env
 *.iml
-credentials
+
+# Ambientes virtuais
+venv/
+ENV/
+env/
+*.egg-info/
+
+# Arquivos de dependência
+_pycache_/
+*.py[cod]
+
+# Arquivos sensíveis
+*.env
+*.key
+*.pem
+*.crt
+*.db
 credentials.json
-blog/static/images
+secrets.json
+
+# Logs e dados temporários
+*.log
+*.sqlite3
+*.csv
+*.tmp
+
+# Arquivos do sistema operacional
+.DS_Store
+Thumbs.db
+
+# Imagens privadas ou não versionadas
+logo.png
+assets/logo.png
