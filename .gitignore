@@ -1,0 +1,7 @@
+.idea/
+*.key
+*.env
+*.iml
+credentials
+credentials.json
+blog/static/images

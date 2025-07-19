@@ -5,7 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f7a43b8d-6a1e-4048-839b-44bf3a4832e8" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/site_melissa.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
@@ -24,13 +26,52 @@
       <change afterPath="$PROJECT_DIR$/.venv/Scripts/vcruntime140.dll" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.venv/Scripts/vcruntime140_1.dll" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.venv/pyvenv.cfg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blog/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blog/admin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blog/apps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blog/migrations/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blog/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blog/static/images/logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blog/templates/home.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blog/templates/login.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blog/tests.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blog/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blog/views.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/credentials/henz-checklist.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/funcionarios/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/funcionarios/admin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/funcionarios/apps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/funcionarios/migrations/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/funcionarios/models.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/funcionarios/templates/funcionarios/home.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/funcionarios/tests.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/funcionarios/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/funcionarios/views.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manage.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/relatorios/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/relatorios/admin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/relatorios/apps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/relatorios/migrations/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/relatorios/models.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/relatorios/templates/relatorios/home.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/relatorios/tests.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/relatorios/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/relatorios/views.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/site_melissa/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/site_melissa/asgi.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/site_melissa/settings.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/site_melissa/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/site_melissa/wsgi.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/veiculos/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/veiculos/admin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/veiculos/apps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/veiculos/migrations/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/veiculos/models.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/veiculos/templates/veiculos/home.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/veiculos/tests.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/veiculos/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/veiculos/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,6 +119,12 @@
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;ChangesTree.GroupingKeys&quot;: [
+      &quot;directory&quot;,
+      &quot;repository&quot;
+    ]
   }
 }</component>
   <component name="RecentsManager">
@@ -131,7 +178,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1752866507994</updated>
-      <workItem from="1752866509146" duration="12682000" />
+      <workItem from="1752866509146" duration="13143000" />
+      <workItem from="1752884792176" duration="754000" />
     </task>
     <servers />
   </component>
