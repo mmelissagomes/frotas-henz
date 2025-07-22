@@ -178,7 +178,7 @@ def relacionar_id_envio_por_dia(sheet):
         logging.warning(f"⚠️ A planilha tem apenas {len(cabecalho)} colunas, coluna 30 não encontrada.")
         return []
 
-    nome_id_envio = cabecalho[29]
+    nome_id_envio = cabecalho[30]
     nome_data      = cabecalho[3]
 
     relacoes = []
