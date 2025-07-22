@@ -29,6 +29,8 @@ INSTALLED_APPS = [
 # ⚙️ Middlewares padrão
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -82,15 +84,22 @@ USE_I18N = True
 USE_TZ = True
 
 # 📁 Arquivos estáticos
+
+BASE_DIR = os.path.dirname(
+            os.path.dirname(
+                os.path.abspath(__file__)
+            )
+          )
+
 STATIC_URL = '/static/'
-
-STATICFILES_DIRS = [
-    BASE_DIR / 'blog' / 'static',
-    BASE_DIR / 'relatorios' / 'static',
-    BASE_DIR / 'static_common',
-]
-
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Aponte para onde estão, de fato, os arquivos estáticos:
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'assets'),              # seu assets global
+    #os.path.join(BASE_DIR, 'blog', 'static'),      # varre blog/static/...
+    #os.path.join(BASE_DIR, 'relatorios', 'static') # varre relatorios/static/...
+]
 
 
 # 🔑 Redirecionamento de autenticação
