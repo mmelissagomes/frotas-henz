@@ -4,6 +4,7 @@
 
 # Ambientes virtuais
 venv/
+.venv
 ENV/
 env/
 *.egg-info/
