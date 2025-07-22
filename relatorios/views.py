@@ -4,7 +4,9 @@ from weasyprint import HTML
 from .planilha import (
     gerar_matriz_mensal,
     gerar_matriz_mensal_completo,
-    construir_resposta_indexada
+    construir_resposta_indexada,
+    conectar_planilha,
+    relacionar_id_envio_por_dia
 )
 from django.shortcuts import render
 import base64
@@ -38,6 +40,9 @@ def gerar_relatorio_mensal_pdf(request, placa, mes):
     logo_base64 = carregar_logo_base64()
     dados = gerar_matriz_mensal(placa.strip().upper(), mes)
     dias = list(range(1, 32))
+    sheet = conectar_planilha()
+    relacoes_id = relacionar_id_envio_por_dia(sheet)
+
 
     resposta = construir_resposta_indexada(
         matriz_respostas=dados.get("matriz", {}),
@@ -51,6 +56,7 @@ def gerar_relatorio_mensal_pdf(request, placa, mes):
         "dias": dias,
         "logo_base64": logo_base64,
         "resposta": dados["resposta"],
+        "relacoes_id": relacoes_id,
     })
 
     pdf_file = HTML(string=html_string).write_pdf()
@@ -64,6 +70,9 @@ def gerar_relatorio_mensal_completo_pdf(request, mes, ano):
     todos_raw, dias = gerar_matriz_mensal_completo(mes)
     logo_base64 = carregar_logo_base64()
     placas_html = []
+    sheet = conectar_planilha()
+    relacoes_id = relacionar_id_envio_por_dia(sheet)
+
 
     for dados in todos_raw:
         resposta = construir_resposta_indexada(
@@ -78,6 +87,7 @@ def gerar_relatorio_mensal_completo_pdf(request, mes, ano):
             "dias": dias,
             "logo_base64": logo_base64,
             "resposta": dados["resposta"],
+            "relacoes_id": relacoes_id,
             "quebra_pagina": True
         })
         placas_html.append(html_placa)
@@ -89,4 +99,5 @@ def gerar_relatorio_mensal_completo_pdf(request, mes, ano):
     filename = f"relatorio_mensal_completo_{mes}.pdf"
     response["Content-Disposition"] = f"inline; filename={filename}"
     return response
+
 
