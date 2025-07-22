@@ -1,0 +1,227 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Relatórios da Frota</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #454486, #198a3c, #000000);
+      background-size: 600% 600%;
+      animation: gradientBG 15s ease infinite;
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    body::after {
+      content: "";
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: url('{% static "images/logo.png" %}') no-repeat center center;
+      background-size: 280px;
+      opacity: 0.03;
+      z-index: 0;
+    }
+
+    .top-logo {
+      position: absolute;
+      top: 0px;
+      left: 20px;
+      z-index: 3;
+    }
+
+    .top-logo img {
+      width: 200px;
+      filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.4));
+    }
+
+    header {
+      position: relative;
+      z-index: 2;
+      background: rgba(0, 0, 0, 0.4);
+      color: white;
+      padding: 2rem;
+      text-align: center;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+      font-weight: 600;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+    }
+
+    main {
+      padding: 6rem 2rem 2rem;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .form-container {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      padding: 2rem 3rem;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+      width: 100%;
+      max-width: 500px;
+    }
+
+    h2 {
+      color: #ffffff;
+      margin-bottom: 1.5rem;
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+      color: #ffffff;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 0.6rem;
+      margin-bottom: 1rem;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      background: rgba(255,255,255,0.8);
+    }
+
+    button {
+      width: 100%;
+      background-color: #198a3c;
+      color: white;
+      padding: 0.8rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 0 0 6px #198a3c;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #145e28;
+      box-shadow: 0 0 10px #198a3c;
+    }
+
+    footer {
+      margin-top: 3rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #eee;
+      z-index: 2;
+      position: relative;
+    }
+
+    @media (max-width: 480px) {
+      .form-container { width: 90%; padding: 20px; }
+      .top-logo img { width: 120px; }
+      body::after { background-size: 200px; }
+      header h1 { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Logo canto superior -->
+  <div class="top-logo">
+    <img src="{% static 'images/logo.png' %}" alt="Logo da Empresa">
+  </div>
+
+  <!-- Cabeçalho -->
+  <header>
+    <h1>Relatórios da Frota</h1>
+  </header>
+
+  <!-- Conteúdo -->
+  <main>
+    <div class="form-container">
+      <h2>Relatório de Veículo</h2>
+      <form onsubmit="return gerarRelatorio()">
+        <label for="placa">Placa do veículo:</label>
+        <input type="text" id="placa" name="placa" placeholder="Digite a placa" required>
+
+        <label for="mesPlaca">Selecione o mês:</label>
+        <select id="mesPlaca" name="mes" required>
+          <option value="">-- Selecione --</option>
+          {% for numero, nome in months %}
+            <option value="{{ numero }}">{{ nome }}</option>
+          {% endfor %}
+        </select>
+
+        <button type="submit">Gerar Relatório PDF</button>
+      </form>
+    </div>
+
+    <div class="form-container">
+      <h2>Relatório Completo da Frota</h2>
+      <form onsubmit="return gerarRelatorioCompleto()">
+        <label for="mesFrota">Escolha o mês:</label>
+        <select id="mesFrota" name="mes" required>
+          <option value="">-- Selecione --</option>
+          {% for codigo, nome in months %}
+            <option value="{{ codigo }}">{{ nome }}</option>
+          {% endfor %}
+        </select>
+
+        <label for="ano">Escolha o ano:</label>
+        <select name="ano" id="ano" required>
+          <option value="">-- Selecione --</option>
+          {% for ano in years %}
+            <option value="{{ ano }}">{{ ano }}</option>
+          {% endfor %}
+        </select>
+
+        <button type="submit">Gerar relatório completo</button>
+      </form>
+    </div>
+  </main>
+
+  <footer>
+    <p>Checklist mensal de veículos • Frota Henz</p>
+  </footer>
+
+  <script>
+    function gerarRelatorio() {
+      const placa = document.getElementById("placa").value.trim().toUpperCase();
+      const mes = document.getElementById("mesPlaca").value;
+      if (!placa || !mes) return false;
+      const rota = `/relatorios/api/relatorios/mensal/${placa}/${mes}/pdf`;
+      window.location.href = rota;
+      return false;
+    }
+
+    function gerarRelatorioCompleto() {
+      const mes = document.getElementById("mesFrota").value;
+      const ano = document.getElementById("ano").value;
+      if (!mes || !ano) return false;
+      const rota = `/relatorios/api/relatorios/mensal-completo/${mes}/${ano}/pdf`;
+      window.location.href = rota;
+      return false;
+    }
+  </script>
+</body>
+</html>

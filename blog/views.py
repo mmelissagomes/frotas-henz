@@ -1,17 +1,24 @@
-﻿# Create your views here.
-from django.http import HttpResponse
+﻿from django.shortcuts import render, redirect
 
-def home(request):
-    return HttpResponse("Olá, Melissa! Seu site está funcionando lindamente 🚀")
-from django.contrib.auth.decorators import login_required
+# ✅ Lista de usuários permitidos
+USUARIOS_ACEITOS = {
+    "melissa.admin": "FrotaControle#admin",
+    "Silvia.admin": "Mw!6DNUefKbMdxF"
+}
 
+# ✅ Página de login acessada via "/"
+def login_view(request):
+    if request.method == "POST":
+        usuario = request.POST.get("usuario")
+        senha = request.POST.get("senha")
 
-@login_required
-def home(request):
-    return render(request, 'home.html')
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
+        if usuario in USUARIOS_ACEITOS and USUARIOS_ACEITOS[usuario] == senha:
+            return redirect("home")  # vai para /home
 
-@login_required
-def home(request):
-    return render(request, 'home.html')
+        return render(request, "login.html", {"erro": "Usuário ou senha inválidos."})
+
+    return render(request, "login.html")  # GET inicial
+
+# ✅ Página exibida após login bem-sucedido
+def home_view(request):
+    return render(request, "home.html")

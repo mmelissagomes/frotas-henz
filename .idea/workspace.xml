@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f7a43b8d-6a1e-4048-839b-44bf3a4832e8" name="Changes" comment="Adicionar logotipo em gitignore" />
+    <list default="true" id="f7a43b8d-6a1e-4048-839b-44bf3a4832e8" name="Changes" comment="Adicionar logotipo em gitignore2">
+      <change afterPath="$PROJECT_DIR$/credentials/henz-checklist-05aaeba03b3d.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/relatorios/templates/relatorios/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/relatorios/templates/relatorios/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/relatorios/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/relatorios/views.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,27 +18,27 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Python Script" />
         <option value="HTML File" />
         <option value="package.json" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "mmelissagomes"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;mmelissagomes&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/mmelissagomes/check-list-frotas.git",
-    "accountId": "8b5c9af6-d775-402d-b0d4-45c336dea6ac"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/mmelissagomes/check-list-frotas.git&quot;,
+    &quot;accountId&quot;: &quot;8b5c9af6-d775-402d-b0d4-45c336dea6ac&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
 }</component>
@@ -73,11 +78,11 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\mmeli\PycharmProjects\FlaskProject\FlaskProject\DjangoProject2\site_melissa\credentials" />
       <recent name="C:\Users\mmeli\PycharmProjects\FlaskProject\FlaskProject\DjangoProject2\site_melissa" />
       <recent name="C:\Users\mmeli\PycharmProjects\FlaskProject\FlaskProject\DjangoProject2\blog\site_melissa" />
       <recent name="C:\Users\mmeli\PycharmProjects\FlaskProject\FlaskProject\DjangoProject2\site_melissa\blog" />
       <recent name="C:\Users\mmeli\PycharmProjects\FlaskProject\FlaskProject\DjangoProject2\site_melissa\blog\" />
-      <recent name="C:\Users\mmeli\PycharmProjects\FlaskProject\FlaskProject\DjangoProject2\site_melissa\blog\site_melissa" />
     </key>
   </component>
   <component name="RunManager">
@@ -123,7 +128,12 @@
       <option name="presentableId" value="Default" />
       <updated>1752866507994</updated>
       <workItem from="1752866509146" duration="13143000" />
-      <workItem from="1752884792176" duration="1162000" />
+      <workItem from="1752884792176" duration="1469000" />
+      <workItem from="1752887256122" duration="825000" />
+      <workItem from="1752888924036" duration="165000" />
+      <workItem from="1752889214714" duration="493000" />
+      <workItem from="1752891423351" duration="1099000" />
+      <workItem from="1752894486938" duration="454000" />
     </task>
     <task id="LOCAL-00001" summary="Adicionar logotipo em gitignore">
       <option name="closed" value="true" />
@@ -133,7 +143,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752885956311</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Adicionar logotipo em gitignore2">
+      <option name="closed" value="true" />
+      <created>1752886186090</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1752886186090</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -153,6 +171,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial commit" />
     <MESSAGE value="Adicionar logotipo em gitignore" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adicionar logotipo em gitignore" />
+    <MESSAGE value="Adicionar logotipo em gitignore2" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adicionar logotipo em gitignore2" />
   </component>
 </project>

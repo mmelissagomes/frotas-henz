@@ -1,0 +1,981 @@
+{% load filtros %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    @page {
+      size: A4 landscape;
+      margin-top: 0.15cm;
+      margin-left: 4px;
+      margin-right: 4px;
+      margin-bottom: 1cm;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin-left: 2px;
+      margin-right: 2px;
+      font-size: 10px;
+      padding: 0;
+    }
+
+    .placa-section {
+      page-break-after: always;
+      margin-bottom: 20px;
+    }
+
+    .cabecalho {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .cabecalho img {
+      height: 80px;
+      margin-bottom: 5px;
+    }
+
+    .cabecalho h2 {
+      color: #010f27;
+      margin: 1px;
+      font-size: 19px;
+      margin-top: 1px;
+      margin-bottom: 1px;
+    }
+
+    .info-linha {
+      background-color: #c2dbcb;
+      padding: 1px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      margin-bottom: 1px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+      table-layout: auto;
+      margin-top: 1PX;
+    }
+    th {
+      width: 170px;        /* fixa largura do cabeçalho */
+      max-width: 15px;
+     text-align: left;
+    }
+
+    th, td {
+      text-align: center;
+      word-wrap: break-word;
+      border: 1px solid #ccc;
+      padding: 3px;
+      max-width: 25px;
+    }
+
+    th:first-child {
+      width: 200px;          /* define largura fixa */
+      max-width: 250px;
+      white-space: nowrap;   /* permite quebra de linha se necessário */
+      text-align: center;
+    }
+
+    td:first-child {
+      text-align: left;
+      max-width: 250px;
+      white-space: nowrap;
+    }
+
+    .observacoes, .assinatura {
+      text-align: center;
+      margin-top: 5px;
+      margin-bottom: 50px;
+      font-size: 13px;
+    }
+    .logo-fundo {
+    position: absolute;
+    top: 41%;
+    left: 66%;
+    transform: translate(-50%, -50%);
+    width: 1460px;
+    opacity: 0.14;           /* ajusta a transparência */
+    z-index: 0;              
+    }
+    .rodape {
+      font-size: 8px;
+      color: #777;
+      margin-top: 5px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+    <div class="placa-section">
+      <img src="{{ logo_base64 }}" class="logo-fundo" alt="Marca d'água" />
+      <div class="cabecalho">
+        <div style="display: flex; align-items: center; margin-bottom: 2px;">
+        </div>
+        <h2 style="margin-top: 0; margin-bottom: 10px;">CHECK-LIST Caminhão Carroceria - Transporte de Pessoas
+        </h2>
+        <div class="info-linha">
+          <div><strong>NOME:</strong> {{ dados.nome }}</div>
+          <div><strong>PLACA:</strong> {{ dados.placa }}</div>
+          <div><strong>MÊS:</strong> {{ dados.mes }}</div>
+          <div><strong>ANO:</strong> {{ dados.ano }}</div>
+        </div>
+      </div>
+        <style>
+  tr {
+    height: 18px;
+  }
+
+  td {
+  min-width: 20px;
+  height: 15px;
+  color: black;
+  visibility: visible;
+  font-weight: normal;
+  padding: 2px;
+    line-height: 1.25;
+}
+  .legenda-box {
+    background-color: #e2f4e8;
+    padding: 3px;
+    margin-top: 1px;
+    font-size: 11px;
+  }
+
+</style>
+      <table>
+        <tr>
+          <th>Item</th>
+            <th>1</th>
+            <th>2</th>
+            <th>3</th>
+            <th>4</th>
+            <th>5</th>
+            <th>6</th>
+            <th>7</th>
+            <th>8</th>
+            <th>9</th>
+            <th>10</th>
+            <th>11</th>
+            <th>12</th>
+            <th>13</th>
+            <th>14</th>
+            <th>15</th>
+            <th>16</th>
+            <th>17</th>
+            <th>18</th>
+            <th>19</th>
+            <th>20</th>
+            <th>21</th>
+            <th>22</th>
+            <th>23</th>
+            <th>24</th>
+            <th>25</th>
+            <th>26</th>
+            <th>27</th>
+            <th>28</th>
+            <th>29</th>
+            <th>30</th>
+            <th>31</th> 
+       </tr>
+        <tr> 
+            <td>O motorista está com a habilitação em dia?</td>
+            <td> {{ resposta|get_item:4|get_item:1 }} </td>
+            <td> {{ resposta|get_item:4|get_item:2 }} </td>
+            <td> {{ resposta|get_item:4|get_item:3 }} </td>
+            <td> {{ resposta|get_item:4|get_item:4 }} </td>
+            <td> {{ resposta|get_item:4|get_item:5 }} </td>
+            <td> {{ resposta|get_item:4|get_item:6 }} </td>
+            <td> {{ resposta|get_item:4|get_item:7 }} </td>
+            <td> {{ resposta|get_item:4|get_item:8 }} </td>
+            <td> {{ resposta|get_item:4|get_item:9 }} </td>
+            <td> {{ resposta|get_item:4|get_item:10 }} </td>
+            <td> {{ resposta|get_item:4|get_item:11 }} </td>
+            <td> {{ resposta|get_item:4|get_item:12 }} </td>
+            <td> {{ resposta|get_item:4|get_item:13 }} </td>
+            <td> {{ resposta|get_item:4|get_item:14 }} </td>
+            <td> {{ resposta|get_item:4|get_item:15 }} </td>
+            <td> {{ resposta|get_item:4|get_item:16 }} </td>
+            <td> {{ resposta|get_item:4|get_item:17 }} </td>
+            <td> {{ resposta|get_item:4|get_item:18 }} </td>
+            <td> {{ resposta|get_item:4|get_item:19 }} </td>
+            <td> {{ resposta|get_item:4|get_item:20 }} </td>
+            <td> {{ resposta|get_item:4|get_item:21 }} </td>
+            <td> {{ resposta|get_item:4|get_item:22 }} </td>
+            <td> {{ resposta|get_item:4|get_item:23 }} </td>
+            <td> {{ resposta|get_item:4|get_item:24 }} </td>
+            <td> {{ resposta|get_item:4|get_item:25 }} </td>
+            <td> {{ resposta|get_item:4|get_item:26 }} </td>
+            <td> {{ resposta|get_item:4|get_item:27 }} </td>
+            <td> {{ resposta|get_item:4|get_item:28 }} </td>
+            <td> {{ resposta|get_item:4|get_item:29 }} </td>
+            <td> {{ resposta|get_item:4|get_item:30 }} </td>
+            <td> {{ resposta|get_item:4|get_item:31 }} </td>
+          </tr>
+           <tr>
+            <td>Habilitação vencida; multas; penalizações?</td>
+            <td>{{ resposta|get_item:5|get_item:1 }}</td>
+            <td>{{ resposta|get_item:5|get_item:2 }}</td>
+            <td>{{ resposta|get_item:5|get_item:3 }}</td>
+            <td>{{ resposta|get_item:5|get_item:4 }}</td>
+            <td>{{ resposta|get_item:5|get_item:5 }}</td>
+            <td>{{ resposta|get_item:5|get_item:6 }}</td>
+            <td>{{ resposta|get_item:5|get_item:7 }}</td>
+            <td>{{ resposta|get_item:5|get_item:8 }}</td>
+            <td>{{ resposta|get_item:5|get_item:9 }}</td>
+            <td>{{ resposta|get_item:5|get_item:10 }}</td>
+            <td>{{ resposta|get_item:5|get_item:11 }}</td>
+            <td>{{ resposta|get_item:5|get_item:12 }}</td>
+            <td>{{ resposta|get_item:5|get_item:13 }}</td>
+            <td>{{ resposta|get_item:5|get_item:14 }}</td>
+            <td>{{ resposta|get_item:5|get_item:15 }}</td>
+            <td>{{ resposta|get_item:5|get_item:16 }}</td>
+            <td>{{ resposta|get_item:5|get_item:17 }}</td>
+            <td>{{ resposta|get_item:5|get_item:18 }}</td>
+            <td>{{ resposta|get_item:5|get_item:19 }}</td>
+            <td>{{ resposta|get_item:5|get_item:20 }}</td>
+            <td>{{ resposta|get_item:5|get_item:21 }}</td>
+            <td>{{ resposta|get_item:5|get_item:22 }}</td>
+            <td>{{ resposta|get_item:5|get_item:23 }}</td>
+            <td>{{ resposta|get_item:5|get_item:24 }}</td>
+            <td>{{ resposta|get_item:5|get_item:25 }}</td>
+            <td>{{ resposta|get_item:5|get_item:26 }}</td>
+            <td>{{ resposta|get_item:5|get_item:27 }}</td>
+            <td>{{ resposta|get_item:5|get_item:28 }}</td>
+            <td>{{ resposta|get_item:5|get_item:29 }}</td>
+            <td>{{ resposta|get_item:5|get_item:30 }}</td>
+            <td>{{ resposta|get_item:5|get_item:31 }}</td>
+          </tr>
+          <tr>
+        <td>Possui tacógrafo com disco?</td>
+        <td>{{ resposta|get_item:6|get_item:1 }}</td>
+        <td>{{ resposta|get_item:6|get_item:2 }}</td>
+        <td>{{ resposta|get_item:6|get_item:3 }}</td>
+        <td>{{ resposta|get_item:6|get_item:4 }}</td>
+        <td>{{ resposta|get_item:6|get_item:5 }}</td>
+        <td>{{ resposta|get_item:6|get_item:6 }}</td>
+        <td>{{ resposta|get_item:6|get_item:7 }}</td>
+        <td>{{ resposta|get_item:6|get_item:8 }}</td>
+        <td>{{ resposta|get_item:6|get_item:9 }}</td>
+        <td>{{ resposta|get_item:6|get_item:10 }}</td>
+        <td>{{ resposta|get_item:6|get_item:11 }}</td>
+        <td>{{ resposta|get_item:6|get_item:12 }}</td>
+        <td>{{ resposta|get_item:6|get_item:13 }}</td>
+        <td>{{ resposta|get_item:6|get_item:14 }}</td>
+        <td>{{ resposta|get_item:6|get_item:15 }}</td>
+        <td>{{ resposta|get_item:6|get_item:16 }}</td>
+        <td>{{ resposta|get_item:6|get_item:17 }}</td>
+        <td>{{ resposta|get_item:6|get_item:18 }}</td>
+        <td>{{ resposta|get_item:6|get_item:19 }}</td>
+        <td>{{ resposta|get_item:6|get_item:20 }}</td>
+        <td>{{ resposta|get_item:6|get_item:21 }}</td>
+        <td>{{ resposta|get_item:6|get_item:22 }}</td>
+        <td>{{ resposta|get_item:6|get_item:23 }}</td>
+        <td>{{ resposta|get_item:6|get_item:24 }}</td>
+        <td>{{ resposta|get_item:6|get_item:25 }}</td>
+        <td>{{ resposta|get_item:6|get_item:26 }}</td>
+        <td>{{ resposta|get_item:6|get_item:27 }}</td>
+        <td>{{ resposta|get_item:6|get_item:28 }}</td>
+        <td>{{ resposta|get_item:6|get_item:29 }}</td>
+        <td>{{ resposta|get_item:6|get_item:30 }}</td>
+        <td>{{ resposta|get_item:6|get_item:31 }}</td>
+      </tr>
+      <tr>
+        <td>O sistema de iluminação externa está apto?</td>
+        <td>{{ resposta|get_item:7|get_item:1 }}</td>
+        <td>{{ resposta|get_item:7|get_item:2 }}</td>
+        <td>{{ resposta|get_item:7|get_item:3 }}</td>
+        <td>{{ resposta|get_item:7|get_item:4 }}</td>
+        <td>{{ resposta|get_item:7|get_item:5 }}</td>
+        <td>{{ resposta|get_item:7|get_item:6 }}</td>
+        <td>{{ resposta|get_item:7|get_item:7 }}</td>
+        <td>{{ resposta|get_item:7|get_item:8 }}</td>
+        <td>{{ resposta|get_item:7|get_item:9 }}</td>
+        <td>{{ resposta|get_item:7|get_item:10 }}</td>
+        <td>{{ resposta|get_item:7|get_item:11 }}</td>
+        <td>{{ resposta|get_item:7|get_item:12 }}</td>
+        <td>{{ resposta|get_item:7|get_item:13 }}</td>
+        <td>{{ resposta|get_item:7|get_item:14 }}</td>
+        <td>{{ resposta|get_item:7|get_item:15 }}</td>
+        <td>{{ resposta|get_item:7|get_item:16 }}</td>
+        <td>{{ resposta|get_item:7|get_item:17 }}</td>
+        <td>{{ resposta|get_item:7|get_item:18 }}</td>
+        <td>{{ resposta|get_item:7|get_item:19 }}</td>
+        <td>{{ resposta|get_item:7|get_item:20 }}</td>
+        <td>{{ resposta|get_item:7|get_item:21 }}</td>
+        <td>{{ resposta|get_item:7|get_item:22 }}</td>
+        <td>{{ resposta|get_item:7|get_item:23 }}</td>
+        <td>{{ resposta|get_item:7|get_item:24 }}</td>
+        <td>{{ resposta|get_item:7|get_item:25 }}</td>
+        <td>{{ resposta|get_item:7|get_item:26 }}</td>
+        <td>{{ resposta|get_item:7|get_item:27 }}</td>
+        <td>{{ resposta|get_item:7|get_item:28 }}</td>
+        <td>{{ resposta|get_item:7|get_item:29 }}</td>
+        <td>{{ resposta|get_item:7|get_item:30 }}</td>
+        <td>{{ resposta|get_item:7|get_item:31 }}</td>
+      </tr>
+      <tr>
+        <td>Tem estepe?</td>
+        <td>{{ resposta|get_item:8|get_item:1 }}</td>
+        <td>{{ resposta|get_item:8|get_item:2 }}</td>
+        <td>{{ resposta|get_item:8|get_item:3 }}</td>
+        <td>{{ resposta|get_item:8|get_item:4 }}</td>
+        <td>{{ resposta|get_item:8|get_item:5 }}</td>
+        <td>{{ resposta|get_item:8|get_item:6 }}</td>
+        <td>{{ resposta|get_item:8|get_item:7 }}</td>
+        <td>{{ resposta|get_item:8|get_item:8 }}</td>
+        <td>{{ resposta|get_item:8|get_item:9 }}</td>
+        <td>{{ resposta|get_item:8|get_item:10 }}</td>
+        <td>{{ resposta|get_item:8|get_item:11 }}</td>
+        <td>{{ resposta|get_item:8|get_item:12 }}</td>
+        <td>{{ resposta|get_item:8|get_item:13 }}</td>
+        <td>{{ resposta|get_item:8|get_item:14 }}</td>
+        <td>{{ resposta|get_item:8|get_item:15 }}</td>
+        <td>{{ resposta|get_item:8|get_item:16 }}</td>
+        <td>{{ resposta|get_item:8|get_item:17 }}</td>
+        <td>{{ resposta|get_item:8|get_item:18 }}</td>
+        <td>{{ resposta|get_item:8|get_item:19 }}</td>
+        <td>{{ resposta|get_item:8|get_item:20 }}</td>
+        <td>{{ resposta|get_item:8|get_item:21 }}</td>
+        <td>{{ resposta|get_item:8|get_item:22 }}</td>
+        <td>{{ resposta|get_item:8|get_item:23 }}</td>
+        <td>{{ resposta|get_item:8|get_item:24 }}</td>
+        <td>{{ resposta|get_item:8|get_item:25 }}</td>
+        <td>{{ resposta|get_item:8|get_item:26 }}</td>
+        <td>{{ resposta|get_item:8|get_item:27 }}</td>
+        <td>{{ resposta|get_item:8|get_item:28 }}</td>
+        <td>{{ resposta|get_item:8|get_item:29 }}</td>
+        <td>{{ resposta|get_item:8|get_item:30 }}</td>
+        <td>{{ resposta|get_item:8|get_item:31 }}</td>
+      </tr>
+      <tr>
+        <td>O estepe está em bom estado?</td>
+        <td>{{ resposta|get_item:9|get_item:1 }}</td>
+        <td>{{ resposta|get_item:9|get_item:2 }}</td>
+        <td>{{ resposta|get_item:9|get_item:3 }}</td>
+        <td>{{ resposta|get_item:9|get_item:4 }}</td>
+        <td>{{ resposta|get_item:9|get_item:5 }}</td>
+        <td>{{ resposta|get_item:9|get_item:6 }}</td>
+        <td>{{ resposta|get_item:9|get_item:7 }}</td>
+        <td>{{ resposta|get_item:9|get_item:8 }}</td>
+        <td>{{ resposta|get_item:9|get_item:9 }}</td>
+        <td>{{ resposta|get_item:9|get_item:10 }}</td>
+        <td>{{ resposta|get_item:9|get_item:11 }}</td>
+        <td>{{ resposta|get_item:9|get_item:12 }}</td>
+        <td>{{ resposta|get_item:9|get_item:13 }}</td>
+        <td>{{ resposta|get_item:9|get_item:14 }}</td>
+        <td>{{ resposta|get_item:9|get_item:15 }}</td>
+        <td>{{ resposta|get_item:9|get_item:16 }}</td>
+        <td>{{ resposta|get_item:9|get_item:17 }}</td>
+        <td>{{ resposta|get_item:9|get_item:18 }}</td>
+        <td>{{ resposta|get_item:9|get_item:19 }}</td>
+        <td>{{ resposta|get_item:9|get_item:20 }}</td>
+        <td>{{ resposta|get_item:9|get_item:21 }}</td>
+        <td>{{ resposta|get_item:9|get_item:22 }}</td>
+        <td>{{ resposta|get_item:9|get_item:23 }}</td>
+        <td>{{ resposta|get_item:9|get_item:24 }}</td>
+        <td>{{ resposta|get_item:9|get_item:25 }}</td>
+        <td>{{ resposta|get_item:9|get_item:26 }}</td>
+        <td>{{ resposta|get_item:9|get_item:27 }}</td>
+        <td>{{ resposta|get_item:9|get_item:28 }}</td>
+        <td>{{ resposta|get_item:9|get_item:29 }}</td>
+        <td>{{ resposta|get_item:9|get_item:30 }}</td>
+        <td>{{ resposta|get_item:9|get_item:31 }}</td>
+      </tr>
+      <tr>
+        <td>Os pneus estão conservados para uso?</td>
+        <td>{{ resposta|get_item:10|get_item:1 }}</td>
+        <td>{{ resposta|get_item:10|get_item:2 }}</td>
+        <td>{{ resposta|get_item:10|get_item:3 }}</td>
+        <td>{{ resposta|get_item:10|get_item:4 }}</td>
+        <td>{{ resposta|get_item:10|get_item:5 }}</td>
+        <td>{{ resposta|get_item:10|get_item:6 }}</td>
+        <td>{{ resposta|get_item:10|get_item:7 }}</td>
+        <td>{{ resposta|get_item:10|get_item:8 }}</td>
+        <td>{{ resposta|get_item:10|get_item:9 }}</td>
+        <td>{{ resposta|get_item:10|get_item:10 }}</td>
+        <td>{{ resposta|get_item:10|get_item:11 }}</td>
+        <td>{{ resposta|get_item:10|get_item:12 }}</td>
+        <td>{{ resposta|get_item:10|get_item:13 }}</td>
+        <td>{{ resposta|get_item:10|get_item:14 }}</td>
+        <td>{{ resposta|get_item:10|get_item:15 }}</td>
+        <td>{{ resposta|get_item:10|get_item:16 }}</td>
+        <td>{{ resposta|get_item:10|get_item:17 }}</td>
+        <td>{{ resposta|get_item:10|get_item:18 }}</td>
+        <td>{{ resposta|get_item:10|get_item:19 }}</td>
+        <td>{{ resposta|get_item:10|get_item:20 }}</td>
+        <td>{{ resposta|get_item:10|get_item:21 }}</td>
+        <td>{{ resposta|get_item:10|get_item:22 }}</td>
+        <td>{{ resposta|get_item:10|get_item:23 }}</td>
+        <td>{{ resposta|get_item:10|get_item:24 }}</td>
+        <td>{{ resposta|get_item:10|get_item:25 }}</td>
+        <td>{{ resposta|get_item:10|get_item:26 }}</td>
+        <td>{{ resposta|get_item:10|get_item:27 }}</td>
+        <td>{{ resposta|get_item:10|get_item:28 }}</td>
+        <td>{{ resposta|get_item:10|get_item:29 }}</td>
+        <td>{{ resposta|get_item:10|get_item:30 }}</td>
+        <td>{{ resposta|get_item:10|get_item:31 }}</td>
+      </tr>
+      <tr>
+        <td>Os espelhos em perfeito estado de conservação?</td>
+        <td>{{ resposta|get_item:11|get_item:1 }}</td>
+        <td>{{ resposta|get_item:11|get_item:2 }}</td>
+        <td>{{ resposta|get_item:11|get_item:3 }}</td>
+        <td>{{ resposta|get_item:11|get_item:4 }}</td>
+        <td>{{ resposta|get_item:11|get_item:5 }}</td>
+        <td>{{ resposta|get_item:11|get_item:6 }}</td>
+        <td>{{ resposta|get_item:11|get_item:7 }}</td>
+        <td>{{ resposta|get_item:11|get_item:8 }}</td>
+        <td>{{ resposta|get_item:11|get_item:9 }}</td>
+        <td>{{ resposta|get_item:11|get_item:10 }}</td>
+        <td>{{ resposta|get_item:11|get_item:11 }}</td>
+        <td>{{ resposta|get_item:11|get_item:12 }}</td>
+        <td>{{ resposta|get_item:11|get_item:13 }}</td>
+        <td>{{ resposta|get_item:11|get_item:14 }}</td>
+        <td>{{ resposta|get_item:11|get_item:15 }}</td>
+        <td>{{ resposta|get_item:11|get_item:16 }}</td>
+        <td>{{ resposta|get_item:11|get_item:17 }}</td>
+        <td>{{ resposta|get_item:11|get_item:18 }}</td>
+        <td>{{ resposta|get_item:11|get_item:19 }}</td>
+        <td>{{ resposta|get_item:11|get_item:20 }}</td>
+        <td>{{ resposta|get_item:11|get_item:21 }}</td>
+        <td>{{ resposta|get_item:11|get_item:22 }}</td>
+        <td>{{ resposta|get_item:11|get_item:23 }}</td>
+        <td>{{ resposta|get_item:11|get_item:24 }}</td>
+        <td>{{ resposta|get_item:11|get_item:25 }}</td>
+        <td>{{ resposta|get_item:11|get_item:26 }}</td>
+        <td>{{ resposta|get_item:11|get_item:27 }}</td>
+        <td>{{ resposta|get_item:11|get_item:28 }}</td>
+        <td>{{ resposta|get_item:11|get_item:29 }}</td>
+        <td>{{ resposta|get_item:11|get_item:30 }}</td>
+        <td>{{ resposta|get_item:11|get_item:31 }}</td>
+      </tr>
+      <tr>
+        <td>A buzina está funcionando?</td>
+        <td>{{ resposta|get_item:12|get_item:1 }}</td>
+        <td>{{ resposta|get_item:12|get_item:2 }}</td>
+        <td>{{ resposta|get_item:12|get_item:3 }}</td>
+        <td>{{ resposta|get_item:12|get_item:4 }}</td>
+        <td>{{ resposta|get_item:12|get_item:5 }}</td>
+        <td>{{ resposta|get_item:12|get_item:6 }}</td>
+        <td>{{ resposta|get_item:12|get_item:7 }}</td>
+        <td>{{ resposta|get_item:12|get_item:8 }}</td>
+        <td>{{ resposta|get_item:12|get_item:9 }}</td>
+        <td>{{ resposta|get_item:12|get_item:10 }}</td>
+        <td>{{ resposta|get_item:12|get_item:11 }}</td>
+        <td>{{ resposta|get_item:12|get_item:12 }}</td>
+        <td>{{ resposta|get_item:12|get_item:13 }}</td>
+        <td>{{ resposta|get_item:12|get_item:14 }}</td>
+        <td>{{ resposta|get_item:12|get_item:15 }}</td>
+        <td>{{ resposta|get_item:12|get_item:16 }}</td>
+        <td>{{ resposta|get_item:12|get_item:17 }}</td>
+        <td>{{ resposta|get_item:12|get_item:18 }}</td>
+        <td>{{ resposta|get_item:12|get_item:19 }}</td>
+        <td>{{ resposta|get_item:12|get_item:20 }}</td>
+        <td>{{ resposta|get_item:12|get_item:21 }}</td>
+        <td>{{ resposta|get_item:12|get_item:22 }}</td>
+        <td>{{ resposta|get_item:12|get_item:23 }}</td>
+        <td>{{ resposta|get_item:12|get_item:24 }}</td>
+        <td>{{ resposta|get_item:12|get_item:25 }}</td>
+        <td>{{ resposta|get_item:12|get_item:26 }}</td>
+        <td>{{ resposta|get_item:12|get_item:27 }}</td>
+        <td>{{ resposta|get_item:12|get_item:28 }}</td>
+        <td>{{ resposta|get_item:12|get_item:29 }}</td>
+        <td>{{ resposta|get_item:12|get_item:30 }}</td>
+        <td>{{ resposta|get_item:12|get_item:31 }}</td>
+      </tr>
+      <tr>
+        <td>O limpador do para-brisa está em bom estado?</td>
+        <td>{{ resposta|get_item:13|get_item:1 }}</td>
+        <td>{{ resposta|get_item:13|get_item:2 }}</td>
+        <td>{{ resposta|get_item:13|get_item:3 }}</td>
+        <td>{{ resposta|get_item:13|get_item:4 }}</td>
+        <td>{{ resposta|get_item:13|get_item:5 }}</td>
+        <td>{{ resposta|get_item:13|get_item:6 }}</td>
+        <td>{{ resposta|get_item:13|get_item:7 }}</td>
+        <td>{{ resposta|get_item:13|get_item:8 }}</td>
+        <td>{{ resposta|get_item:13|get_item:9 }}</td>
+        <td>{{ resposta|get_item:13|get_item:10 }}</td>
+        <td>{{ resposta|get_item:13|get_item:11 }}</td>
+        <td>{{ resposta|get_item:13|get_item:12 }}</td>
+        <td>{{ resposta|get_item:13|get_item:13 }}</td>
+        <td>{{ resposta|get_item:13|get_item:14 }}</td>
+        <td>{{ resposta|get_item:13|get_item:15 }}</td>
+        <td>{{ resposta|get_item:13|get_item:16 }}</td>
+        <td>{{ resposta|get_item:13|get_item:17 }}</td>
+        <td>{{ resposta|get_item:13|get_item:18 }}</td>
+        <td>{{ resposta|get_item:13|get_item:19 }}</td>
+        <td>{{ resposta|get_item:13|get_item:20 }}</td>
+        <td>{{ resposta|get_item:13|get_item:21 }}</td>
+        <td>{{ resposta|get_item:13|get_item:22 }}</td>
+        <td>{{ resposta|get_item:13|get_item:23 }}</td>
+        <td>{{ resposta|get_item:13|get_item:24 }}</td>
+        <td>{{ resposta|get_item:13|get_item:25 }}</td>
+        <td>{{ resposta|get_item:13|get_item:26 }}</td>
+        <td>{{ resposta|get_item:13|get_item:27 }}</td>
+        <td>{{ resposta|get_item:13|get_item:28 }}</td>
+        <td>{{ resposta|get_item:13|get_item:29 }}</td>
+        <td>{{ resposta|get_item:13|get_item:30 }}</td>
+        <td>{{ resposta|get_item:13|get_item:31 }}</td>
+      </tr>
+      <tr>
+        <td>Foi visualizado algum tipo de vazamento de óleo?</td>
+        <td>{{ resposta|get_item:14|get_item:1 }}</td>
+        <td>{{ resposta|get_item:14|get_item:2 }}</td>
+        <td>{{ resposta|get_item:14|get_item:3 }}</td>
+        <td>{{ resposta|get_item:14|get_item:4 }}</td>
+        <td>{{ resposta|get_item:14|get_item:5 }}</td>
+        <td>{{ resposta|get_item:14|get_item:6 }}</td>
+        <td>{{ resposta|get_item:14|get_item:7 }}</td>
+        <td>{{ resposta|get_item:14|get_item:8 }}</td>
+        <td>{{ resposta|get_item:14|get_item:9 }}</td>
+        <td>{{ resposta|get_item:14|get_item:10 }}</td>
+        <td>{{ resposta|get_item:14|get_item:11 }}</td>
+        <td>{{ resposta|get_item:14|get_item:12 }}</td>
+        <td>{{ resposta|get_item:14|get_item:13 }}</td>
+        <td>{{ resposta|get_item:14|get_item:14 }}</td>
+        <td>{{ resposta|get_item:14|get_item:15 }}</td>
+        <td>{{ resposta|get_item:14|get_item:16 }}</td>
+        <td>{{ resposta|get_item:14|get_item:17 }}</td>
+        <td>{{ resposta|get_item:14|get_item:18 }}</td>
+        <td>{{ resposta|get_item:14|get_item:19 }}</td>
+        <td>{{ resposta|get_item:14|get_item:20 }}</td>
+        <td>{{ resposta|get_item:14|get_item:21 }}</td>
+        <td>{{ resposta|get_item:14|get_item:22 }}</td>
+        <td>{{ resposta|get_item:14|get_item:23 }}</td>
+        <td>{{ resposta|get_item:14|get_item:24 }}</td>
+        <td>{{ resposta|get_item:14|get_item:25 }}</td>
+        <td>{{ resposta|get_item:14|get_item:26 }}</td>
+        <td>{{ resposta|get_item:14|get_item:27 }}</td>
+        <td>{{ resposta|get_item:14|get_item:28 }}</td>
+        <td>{{ resposta|get_item:14|get_item:29 }}</td>
+        <td>{{ resposta|get_item:14|get_item:30 }}</td>
+        <td>{{ resposta|get_item:14|get_item:31 }}</td>
+      </tr>
+      <tr>
+        <td>A instrumentação do painel está funcionando?</td>
+        <td>{{ resposta|get_item:15|get_item:1 }}</td>
+        <td>{{ resposta|get_item:15|get_item:2 }}</td>
+        <td>{{ resposta|get_item:15|get_item:3 }}</td>
+        <td>{{ resposta|get_item:15|get_item:4 }}</td>
+        <td>{{ resposta|get_item:15|get_item:5 }}</td>
+        <td>{{ resposta|get_item:15|get_item:6 }}</td>
+        <td>{{ resposta|get_item:15|get_item:7 }}</td>
+        <td>{{ resposta|get_item:15|get_item:8 }}</td>
+        <td>{{ resposta|get_item:15|get_item:9 }}</td>
+        <td>{{ resposta|get_item:15|get_item:10 }}</td>
+        <td>{{ resposta|get_item:15|get_item:11 }}</td>
+        <td>{{ resposta|get_item:15|get_item:12 }}</td>
+        <td>{{ resposta|get_item:15|get_item:13 }}</td>
+        <td>{{ resposta|get_item:15|get_item:14 }}</td>
+        <td>{{ resposta|get_item:15|get_item:15 }}</td>
+        <td>{{ resposta|get_item:15|get_item:16 }}</td>
+        <td>{{ resposta|get_item:15|get_item:17 }}</td>
+        <td>{{ resposta|get_item:15|get_item:18 }}</td>
+        <td>{{ resposta|get_item:15|get_item:19 }}</td>
+        <td>{{ resposta|get_item:15|get_item:20 }}</td>
+        <td>{{ resposta|get_item:15|get_item:21 }}</td>
+        <td>{{ resposta|get_item:15|get_item:22 }}</td>
+        <td>{{ resposta|get_item:15|get_item:23 }}</td>
+        <td>{{ resposta|get_item:15|get_item:24 }}</td>
+        <td>{{ resposta|get_item:15|get_item:25 }}</td>
+        <td>{{ resposta|get_item:15|get_item:26 }}</td>
+        <td>{{ resposta|get_item:15|get_item:27 }}</td>
+        <td>{{ resposta|get_item:15|get_item:28 }}</td>
+        <td>{{ resposta|get_item:15|get_item:29 }}</td>
+        <td>{{ resposta|get_item:15|get_item:30 }}</td>
+        <td>{{ resposta|get_item:15|get_item:31 }}</td>
+      </tr>
+      <tr>
+        <td>Os marcadores do painel estão funcionando?</td>
+        <td>{{ resposta|get_item:16|get_item:1 }}</td>
+        <td>{{ resposta|get_item:16|get_item:2 }}</td>
+        <td>{{ resposta|get_item:16|get_item:3 }}</td>
+        <td>{{ resposta|get_item:16|get_item:4 }}</td>
+        <td>{{ resposta|get_item:16|get_item:5 }}</td>
+        <td>{{ resposta|get_item:16|get_item:6 }}</td>
+        <td>{{ resposta|get_item:16|get_item:7 }}</td>
+        <td>{{ resposta|get_item:16|get_item:8 }}</td>
+        <td>{{ resposta|get_item:16|get_item:9 }}</td>
+        <td>{{ resposta|get_item:16|get_item:10 }}</td>
+        <td>{{ resposta|get_item:16|get_item:11 }}</td>
+        <td>{{ resposta|get_item:16|get_item:12 }}</td>
+        <td>{{ resposta|get_item:16|get_item:13 }}</td>
+        <td>{{ resposta|get_item:16|get_item:14 }}</td>
+        <td>{{ resposta|get_item:16|get_item:15 }}</td>
+        <td>{{ resposta|get_item:16|get_item:16 }}</td>
+        <td>{{ resposta|get_item:16|get_item:17 }}</td>
+        <td>{{ resposta|get_item:16|get_item:18 }}</td>
+        <td>{{ resposta|get_item:16|get_item:19 }}</td>
+        <td>{{ resposta|get_item:16|get_item:20 }}</td>
+        <td>{{ resposta|get_item:16|get_item:21 }}</td>
+        <td>{{ resposta|get_item:16|get_item:22 }}</td>
+        <td>{{ resposta|get_item:16|get_item:23 }}</td>
+        <td>{{ resposta|get_item:16|get_item:24 }}</td>
+        <td>{{ resposta|get_item:16|get_item:25 }}</td>
+        <td>{{ resposta|get_item:16|get_item:26 }}</td>
+        <td>{{ resposta|get_item:16|get_item:27 }}</td>
+        <td>{{ resposta|get_item:16|get_item:28 }}</td>
+        <td>{{ resposta|get_item:16|get_item:29 }}</td>
+        <td>{{ resposta|get_item:16|get_item:30 }}</td>
+        <td>{{ resposta|get_item:16|get_item:31 }}</td>
+      </tr>
+      <tr>
+        <td>Os strobo estão funcionando?</td>
+        <td>{{ resposta|get_item:17|get_item:1 }}</td>
+        <td>{{ resposta|get_item:17|get_item:2 }}</td>
+        <td>{{ resposta|get_item:17|get_item:3 }}</td>
+        <td>{{ resposta|get_item:17|get_item:4 }}</td>
+        <td>{{ resposta|get_item:17|get_item:5 }}</td>
+        <td>{{ resposta|get_item:17|get_item:6 }}</td>
+        <td>{{ resposta|get_item:17|get_item:7 }}</td>
+        <td>{{ resposta|get_item:17|get_item:8 }}</td>
+        <td>{{ resposta|get_item:17|get_item:9 }}</td>
+        <td>{{ resposta|get_item:17|get_item:10 }}</td>
+        <td>{{ resposta|get_item:17|get_item:11 }}</td>
+        <td>{{ resposta|get_item:17|get_item:12 }}</td>
+        <td>{{ resposta|get_item:17|get_item:13 }}</td>
+        <td>{{ resposta|get_item:17|get_item:14 }}</td>
+        <td>{{ resposta|get_item:17|get_item:15 }}</td>
+        <td>{{ resposta|get_item:17|get_item:16 }}</td>
+        <td>{{ resposta|get_item:17|get_item:17 }}</td>
+        <td>{{ resposta|get_item:17|get_item:18 }}</td>
+        <td>{{ resposta|get_item:17|get_item:19 }}</td>
+        <td>{{ resposta|get_item:17|get_item:20 }}</td>
+        <td>{{ resposta|get_item:17|get_item:21 }}</td>
+        <td>{{ resposta|get_item:17|get_item:22 }}</td>
+        <td>{{ resposta|get_item:17|get_item:23 }}</td>
+        <td>{{ resposta|get_item:17|get_item:24 }}</td>
+        <td>{{ resposta|get_item:17|get_item:25 }}</td>
+        <td>{{ resposta|get_item:17|get_item:26 }}</td>
+        <td>{{ resposta|get_item:17|get_item:27 }}</td>
+        <td>{{ resposta|get_item:17|get_item:28 }}</td>
+        <td>{{ resposta|get_item:17|get_item:29 }}</td>
+        <td>{{ resposta|get_item:17|get_item:30 }}</td>
+        <td>{{ resposta|get_item:17|get_item:31 }}</td>
+      </tr>
+      <tr>
+        <td>A sinalização lateral está adequada?</td>
+        <td>{{ resposta|get_item:18|get_item:1 }}</td>
+        <td>{{ resposta|get_item:18|get_item:2 }}</td>
+        <td>{{ resposta|get_item:18|get_item:3 }}</td>
+        <td>{{ resposta|get_item:18|get_item:4 }}</td>
+        <td>{{ resposta|get_item:18|get_item:5 }}</td>
+        <td>{{ resposta|get_item:18|get_item:6 }}</td>
+        <td>{{ resposta|get_item:18|get_item:7 }}</td>
+        <td>{{ resposta|get_item:18|get_item:8 }}</td>
+        <td>{{ resposta|get_item:18|get_item:9 }}</td>
+        <td>{{ resposta|get_item:18|get_item:10 }}</td>
+        <td>{{ resposta|get_item:18|get_item:11 }}</td>
+        <td>{{ resposta|get_item:18|get_item:12 }}</td>
+        <td>{{ resposta|get_item:18|get_item:13 }}</td>
+        <td>{{ resposta|get_item:18|get_item:14 }}</td>
+        <td>{{ resposta|get_item:18|get_item:15 }}</td>
+        <td>{{ resposta|get_item:18|get_item:16 }}</td>
+        <td>{{ resposta|get_item:18|get_item:17 }}</td>
+        <td>{{ resposta|get_item:18|get_item:18 }}</td>
+        <td>{{ resposta|get_item:18|get_item:19 }}</td>
+        <td>{{ resposta|get_item:18|get_item:20 }}</td>
+        <td>{{ resposta|get_item:18|get_item:21 }}</td>
+        <td>{{ resposta|get_item:18|get_item:22 }}</td>
+        <td>{{ resposta|get_item:18|get_item:23 }}</td>
+        <td>{{ resposta|get_item:18|get_item:24 }}</td>
+        <td>{{ resposta|get_item:18|get_item:25 }}</td>
+        <td>{{ resposta|get_item:18|get_item:26 }}</td>
+        <td>{{ resposta|get_item:18|get_item:27 }}</td>
+        <td>{{ resposta|get_item:18|get_item:28 }}</td>
+        <td>{{ resposta|get_item:18|get_item:29 }}</td>
+        <td>{{ resposta|get_item:18|get_item:30 }}</td>
+        <td>{{ resposta|get_item:18|get_item:31 }}</td>
+      </tr>
+      <tr>
+        <td>Os cones estão com refletivo?</td>
+        <td>{{ resposta|get_item:19|get_item:1 }}</td>
+        <td>{{ resposta|get_item:19|get_item:2 }}</td>
+        <td>{{ resposta|get_item:19|get_item:3 }}</td>
+        <td>{{ resposta|get_item:19|get_item:4 }}</td>
+        <td>{{ resposta|get_item:19|get_item:5 }}</td>
+        <td>{{ resposta|get_item:19|get_item:6 }}</td>
+        <td>{{ resposta|get_item:19|get_item:7 }}</td>
+        <td>{{ resposta|get_item:19|get_item:8 }}</td>
+        <td>{{ resposta|get_item:19|get_item:9 }}</td>
+        <td>{{ resposta|get_item:19|get_item:10 }}</td>
+        <td>{{ resposta|get_item:19|get_item:11 }}</td>
+        <td>{{ resposta|get_item:19|get_item:12 }}</td>
+        <td>{{ resposta|get_item:19|get_item:13 }}</td>
+        <td>{{ resposta|get_item:19|get_item:14 }}</td>
+        <td>{{ resposta|get_item:19|get_item:15 }}</td>
+        <td>{{ resposta|get_item:19|get_item:16 }}</td>
+        <td>{{ resposta|get_item:19|get_item:17 }}</td>
+        <td>{{ resposta|get_item:19|get_item:18 }}</td>
+        <td>{{ resposta|get_item:19|get_item:19 }}</td>
+        <td>{{ resposta|get_item:19|get_item:20 }}</td>
+        <td>{{ resposta|get_item:19|get_item:21 }}</td>
+        <td>{{ resposta|get_item:19|get_item:22 }}</td>
+        <td>{{ resposta|get_item:19|get_item:23 }}</td>
+        <td>{{ resposta|get_item:19|get_item:24 }}</td>
+        <td>{{ resposta|get_item:19|get_item:25 }}</td>
+        <td>{{ resposta|get_item:19|get_item:26 }}</td>
+        <td>{{ resposta|get_item:19|get_item:27 }}</td>
+        <td>{{ resposta|get_item:19|get_item:28 }}</td>
+        <td>{{ resposta|get_item:19|get_item:29 }}</td>
+        <td>{{ resposta|get_item:19|get_item:30 }}</td>
+        <td>{{ resposta|get_item:19|get_item:31 }}</td>
+      </tr>
+      <tr>
+        <td>Os equipamentos estão organizados?</td>
+        <td>{{ resposta|get_item:20|get_item:1 }}</td>
+        <td>{{ resposta|get_item:20|get_item:2 }}</td>
+        <td>{{ resposta|get_item:20|get_item:3 }}</td>
+        <td>{{ resposta|get_item:20|get_item:4 }}</td>
+        <td>{{ resposta|get_item:20|get_item:5 }}</td>
+        <td>{{ resposta|get_item:20|get_item:6 }}</td>
+        <td>{{ resposta|get_item:20|get_item:7 }}</td>
+        <td>{{ resposta|get_item:20|get_item:8 }}</td>
+        <td>{{ resposta|get_item:20|get_item:9 }}</td>
+        <td>{{ resposta|get_item:20|get_item:10 }}</td>
+        <td>{{ resposta|get_item:20|get_item:11 }}</td>
+        <td>{{ resposta|get_item:20|get_item:12 }}</td>
+        <td>{{ resposta|get_item:20|get_item:13 }}</td>
+        <td>{{ resposta|get_item:20|get_item:14 }}</td>
+        <td>{{ resposta|get_item:20|get_item:15 }}</td>
+        <td>{{ resposta|get_item:20|get_item:16 }}</td>
+        <td>{{ resposta|get_item:20|get_item:17 }}</td>
+        <td>{{ resposta|get_item:20|get_item:18 }}</td>
+        <td>{{ resposta|get_item:20|get_item:19 }}</td>
+        <td>{{ resposta|get_item:20|get_item:20 }}</td>
+        <td>{{ resposta|get_item:20|get_item:21 }}</td>
+        <td>{{ resposta|get_item:20|get_item:22 }}</td>
+        <td>{{ resposta|get_item:20|get_item:23 }}</td>
+        <td>{{ resposta|get_item:20|get_item:24 }}</td>
+        <td>{{ resposta|get_item:20|get_item:25 }}</td>
+        <td>{{ resposta|get_item:20|get_item:26 }}</td>
+        <td>{{ resposta|get_item:20|get_item:27 }}</td>
+        <td>{{ resposta|get_item:20|get_item:28 }}</td>
+        <td>{{ resposta|get_item:20|get_item:29 }}</td>
+        <td>{{ resposta|get_item:20|get_item:30 }}</td>
+        <td>{{ resposta|get_item:20|get_item:31 }}</td>
+      </tr>
+      <tr>
+        <td>Todos os assentos estão fixados?</td>
+        <td>{{ resposta|get_item:21|get_item:1 }}</td>
+        <td>{{ resposta|get_item:21|get_item:2 }}</td>
+        <td>{{ resposta|get_item:21|get_item:3 }}</td>
+        <td>{{ resposta|get_item:21|get_item:4 }}</td>
+        <td>{{ resposta|get_item:21|get_item:5 }}</td>
+        <td>{{ resposta|get_item:21|get_item:6 }}</td>
+        <td>{{ resposta|get_item:21|get_item:7 }}</td>
+        <td>{{ resposta|get_item:21|get_item:8 }}</td>
+        <td>{{ resposta|get_item:21|get_item:9 }}</td>
+        <td>{{ resposta|get_item:21|get_item:10 }}</td>
+        <td>{{ resposta|get_item:21|get_item:11 }}</td>
+        <td>{{ resposta|get_item:21|get_item:12 }}</td>
+        <td>{{ resposta|get_item:21|get_item:13 }}</td>
+        <td>{{ resposta|get_item:21|get_item:14 }}</td>
+        <td>{{ resposta|get_item:21|get_item:15 }}</td>
+        <td>{{ resposta|get_item:21|get_item:16 }}</td>
+        <td>{{ resposta|get_item:21|get_item:17 }}</td>
+        <td>{{ resposta|get_item:21|get_item:18 }}</td>
+        <td>{{ resposta|get_item:21|get_item:19 }}</td>
+        <td>{{ resposta|get_item:21|get_item:20 }}</td>
+        <td>{{ resposta|get_item:21|get_item:21 }}</td>
+        <td>{{ resposta|get_item:21|get_item:22 }}</td>
+        <td>{{ resposta|get_item:21|get_item:23 }}</td>
+        <td>{{ resposta|get_item:21|get_item:24 }}</td>
+        <td>{{ resposta|get_item:21|get_item:25 }}</td>
+        <td>{{ resposta|get_item:21|get_item:26 }}</td>
+        <td>{{ resposta|get_item:21|get_item:27 }}</td>
+        <td>{{ resposta|get_item:21|get_item:28 }}</td>
+        <td>{{ resposta|get_item:21|get_item:29 }}</td>
+        <td>{{ resposta|get_item:21|get_item:30 }}</td>
+        <td>{{ resposta|get_item:21|get_item:31 }}</td>
+      </tr>
+      <tr>
+        <td>Tem cinto de segurança para os passageiros?</td>
+        <td>{{ resposta|get_item:22|get_item:1 }}</td>
+        <td>{{ resposta|get_item:22|get_item:2 }}</td>
+        <td>{{ resposta|get_item:22|get_item:3 }}</td>
+        <td>{{ resposta|get_item:22|get_item:4 }}</td>
+        <td>{{ resposta|get_item:22|get_item:5 }}</td>
+        <td>{{ resposta|get_item:22|get_item:6 }}</td>
+        <td>{{ resposta|get_item:22|get_item:7 }}</td>
+        <td>{{ resposta|get_item:22|get_item:8 }}</td>
+        <td>{{ resposta|get_item:22|get_item:9 }}</td>
+        <td>{{ resposta|get_item:22|get_item:10 }}</td>
+        <td>{{ resposta|get_item:22|get_item:11 }}</td>
+        <td>{{ resposta|get_item:22|get_item:12 }}</td>
+        <td>{{ resposta|get_item:22|get_item:13 }}</td>
+        <td>{{ resposta|get_item:22|get_item:14 }}</td>
+        <td>{{ resposta|get_item:22|get_item:15 }}</td>
+        <td>{{ resposta|get_item:22|get_item:16 }}</td>
+        <td>{{ resposta|get_item:22|get_item:17 }}</td>
+        <td>{{ resposta|get_item:22|get_item:18 }}</td>
+        <td>{{ resposta|get_item:22|get_item:19 }}</td>
+        <td>{{ resposta|get_item:22|get_item:20 }}</td>
+        <td>{{ resposta|get_item:22|get_item:21 }}</td>
+        <td>{{ resposta|get_item:22|get_item:22 }}</td>
+        <td>{{ resposta|get_item:22|get_item:23 }}</td>
+        <td>{{ resposta|get_item:22|get_item:24 }}</td>
+        <td>{{ resposta|get_item:22|get_item:25 }}</td>
+        <td>{{ resposta|get_item:22|get_item:26 }}</td>
+        <td>{{ resposta|get_item:22|get_item:27 }}</td>
+        <td>{{ resposta|get_item:22|get_item:28 }}</td>
+        <td>{{ resposta|get_item:22|get_item:29 }}</td>
+        <td>{{ resposta|get_item:22|get_item:30 }}</td>
+        <td>{{ resposta|get_item:22|get_item:31 }}</td>
+      </tr>
+      <tr>
+        <td>A escada está em perfeitas condições?</td>
+        <td>{{ resposta|get_item:23|get_item:1 }}</td>
+        <td>{{ resposta|get_item:23|get_item:2 }}</td>
+        <td>{{ resposta|get_item:23|get_item:3 }}</td>
+        <td>{{ resposta|get_item:23|get_item:4 }}</td>
+        <td>{{ resposta|get_item:23|get_item:5 }}</td>
+        <td>{{ resposta|get_item:23|get_item:6 }}</td>
+        <td>{{ resposta|get_item:23|get_item:7 }}</td>
+        <td>{{ resposta|get_item:23|get_item:8 }}</td>
+        <td>{{ resposta|get_item:23|get_item:9 }}</td>
+        <td>{{ resposta|get_item:23|get_item:10 }}</td>
+        <td>{{ resposta|get_item:23|get_item:11 }}</td>
+        <td>{{ resposta|get_item:23|get_item:12 }}</td>
+        <td>{{ resposta|get_item:23|get_item:13 }}</td>
+        <td>{{ resposta|get_item:23|get_item:14 }}</td>
+        <td>{{ resposta|get_item:23|get_item:15 }}</td>
+        <td>{{ resposta|get_item:23|get_item:16 }}</td>
+        <td>{{ resposta|get_item:23|get_item:17 }}</td>
+        <td>{{ resposta|get_item:23|get_item:18 }}</td>
+        <td>{{ resposta|get_item:23|get_item:19 }}</td>
+        <td>{{ resposta|get_item:23|get_item:20 }}</td>
+        <td>{{ resposta|get_item:23|get_item:21 }}</td>
+        <td>{{ resposta|get_item:23|get_item:22 }}</td>
+        <td>{{ resposta|get_item:23|get_item:23 }}</td>
+        <td>{{ resposta|get_item:23|get_item:24 }}</td>
+        <td>{{ resposta|get_item:23|get_item:25 }}</td>
+        <td>{{ resposta|get_item:23|get_item:26 }}</td>
+        <td>{{ resposta|get_item:23|get_item:27 }}</td>
+        <td>{{ resposta|get_item:23|get_item:28 }}</td>
+        <td>{{ resposta|get_item:23|get_item:29 }}</td>
+        <td>{{ resposta|get_item:23|get_item:30 }}</td>
+        <td>{{ resposta|get_item:23|get_item:31 }}</td>
+      </tr>
+      <tr>
+        <td>O local está limpo?</td>
+        <td>{{ resposta|get_item:24|get_item:1 }}</td>
+        <td>{{ resposta|get_item:24|get_item:2 }}</td>
+        <td>{{ resposta|get_item:24|get_item:3 }}</td>
+        <td>{{ resposta|get_item:24|get_item:4 }}</td>
+        <td>{{ resposta|get_item:24|get_item:5 }}</td>
+        <td>{{ resposta|get_item:24|get_item:6 }}</td>
+        <td>{{ resposta|get_item:24|get_item:7 }}</td>
+        <td>{{ resposta|get_item:24|get_item:8 }}</td>
+        <td>{{ resposta|get_item:24|get_item:9 }}</td>
+        <td>{{ resposta|get_item:24|get_item:10 }}</td>
+        <td>{{ resposta|get_item:24|get_item:11 }}</td>
+        <td>{{ resposta|get_item:24|get_item:12 }}</td>
+        <td>{{ resposta|get_item:24|get_item:13 }}</td>
+        <td>{{ resposta|get_item:24|get_item:14 }}</td>
+        <td>{{ resposta|get_item:24|get_item:15 }}</td>
+        <td>{{ resposta|get_item:24|get_item:16 }}</td>
+        <td>{{ resposta|get_item:24|get_item:17 }}</td>
+        <td>{{ resposta|get_item:24|get_item:18 }}</td>
+        <td>{{ resposta|get_item:24|get_item:19 }}</td>
+        <td>{{ resposta|get_item:24|get_item:20 }}</td>
+        <td>{{ resposta|get_item:24|get_item:21 }}</td>
+        <td>{{ resposta|get_item:24|get_item:22 }}</td>
+        <td>{{ resposta|get_item:24|get_item:23 }}</td>
+        <td>{{ resposta|get_item:24|get_item:24 }}</td>
+        <td>{{ resposta|get_item:24|get_item:25 }}</td>
+        <td>{{ resposta|get_item:24|get_item:26 }}</td>
+        <td>{{ resposta|get_item:24|get_item:27 }}</td>
+        <td>{{ resposta|get_item:24|get_item:28 }}</td>
+        <td>{{ resposta|get_item:24|get_item:29 }}</td>
+        <td>{{ resposta|get_item:24|get_item:30 }}</td>
+        <td>{{ resposta|get_item:24|get_item:31 }}</td>
+      </tr>
+      <tr>
+        <td>O equipamento possui calço para os pneus?</td>
+        <td>{{ resposta|get_item:25|get_item:1 }}</td>
+        <td>{{ resposta|get_item:25|get_item:2 }}</td>
+        <td>{{ resposta|get_item:25|get_item:3 }}</td>
+        <td>{{ resposta|get_item:25|get_item:4 }}</td>
+        <td>{{ resposta|get_item:25|get_item:5 }}</td>
+        <td>{{ resposta|get_item:25|get_item:6 }}</td>
+        <td>{{ resposta|get_item:25|get_item:7 }}</td>
+        <td>{{ resposta|get_item:25|get_item:8 }}</td>
+        <td>{{ resposta|get_item:25|get_item:9 }}</td>
+        <td>{{ resposta|get_item:25|get_item:10 }}</td>
+        <td>{{ resposta|get_item:25|get_item:11 }}</td>
+        <td>{{ resposta|get_item:25|get_item:12 }}</td>
+        <td>{{ resposta|get_item:25|get_item:13 }}</td>
+        <td>{{ resposta|get_item:25|get_item:14 }}</td>
+        <td>{{ resposta|get_item:25|get_item:15 }}</td>
+        <td>{{ resposta|get_item:25|get_item:16 }}</td>
+        <td>{{ resposta|get_item:25|get_item:17 }}</td>
+        <td>{{ resposta|get_item:25|get_item:18 }}</td>
+        <td>{{ resposta|get_item:25|get_item:19 }}</td>
+        <td>{{ resposta|get_item:25|get_item:20 }}</td>
+        <td>{{ resposta|get_item:25|get_item:21 }}</td>
+        <td>{{ resposta|get_item:25|get_item:22 }}</td>
+        <td>{{ resposta|get_item:25|get_item:23 }}</td>
+        <td>{{ resposta|get_item:25|get_item:24 }}</td>
+        <td>{{ resposta|get_item:25|get_item:25 }}</td>
+        <td>{{ resposta|get_item:25|get_item:26 }}</td>
+        <td>{{ resposta|get_item:25|get_item:27 }}</td>
+        <td>{{ resposta|get_item:25|get_item:28 }}</td>
+        <td>{{ resposta|get_item:25|get_item:29 }}</td>
+        <td>{{ resposta|get_item:25|get_item:30 }}</td>
+        <td>{{ resposta|get_item:25|get_item:31 }}</td>
+      </tr>
+      <tr>
+        <td>Há dispositivo sonoro de ré?</td>
+        <td>{{ resposta|get_item:26|get_item:1 }}</td>
+        <td>{{ resposta|get_item:26|get_item:2 }}</td>
+        <td>{{ resposta|get_item:26|get_item:3 }}</td>
+        <td>{{ resposta|get_item:26|get_item:4 }}</td>
+        <td>{{ resposta|get_item:26|get_item:5 }}</td>
+        <td>{{ resposta|get_item:26|get_item:6 }}</td>
+        <td>{{ resposta|get_item:26|get_item:7 }}</td>
+        <td>{{ resposta|get_item:26|get_item:8 }}</td>
+        <td>{{ resposta|get_item:26|get_item:9 }}</td>
+        <td>{{ resposta|get_item:26|get_item:10 }}</td>
+        <td>{{ resposta|get_item:26|get_item:11 }}</td>
+        <td>{{ resposta|get_item:26|get_item:12 }}</td>
+        <td>{{ resposta|get_item:26|get_item:13 }}</td>
+        <td>{{ resposta|get_item:26|get_item:14 }}</td>
+        <td>{{ resposta|get_item:26|get_item:15 }}</td>
+        <td>{{ resposta|get_item:26|get_item:16 }}</td>
+        <td>{{ resposta|get_item:26|get_item:17 }}</td>
+        <td>{{ resposta|get_item:26|get_item:18 }}</td>
+        <td>{{ resposta|get_item:26|get_item:19 }}</td>
+        <td>{{ resposta|get_item:26|get_item:20 }}</td>
+        <td>{{ resposta|get_item:26|get_item:21 }}</td>
+        <td>{{ resposta|get_item:26|get_item:22 }}</td>
+        <td>{{ resposta|get_item:26|get_item:23 }}</td>
+        <td>{{ resposta|get_item:26|get_item:24 }}</td>
+        <td>{{ resposta|get_item:26|get_item:25 }}</td>
+        <td>{{ resposta|get_item:26|get_item:26 }}</td>
+        <td>{{ resposta|get_item:26|get_item:27 }}</td>
+        <td>{{ resposta|get_item:26|get_item:28 }}</td>
+        <td>{{ resposta|get_item:26|get_item:29 }}</td>
+        <td>{{ resposta|get_item:26|get_item:30 }}</td>
+        <td>{{ resposta|get_item:26|get_item:31 }}</td>
+      </tr>
+     </table>
+<div class="legenda-box"> 
+  <strong> Legenda:  </strong>
+  <strong> OK</strong> = Conforme |
+  <strong>NC</strong> = Não Conforme |
+  <strong>N/A</strong> = Não Aplicável |
+  <strong>NO</strong> = Não Operadou |
+  <strong>—</strong> = Sem resposta
+</div>
+         <div class="observacoes">
+        <strong>OBSERVAÇÕES:</strong><br>
+        <pre>{{ dados.observacoes }}</pre>
+      </div>
+  </div>
+</body>
+</html>
