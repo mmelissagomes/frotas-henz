@@ -55,9 +55,11 @@ def gerar_relatorio_mensal_pdf(request, placa, mes):
         "dados": dados,
         "dias": dias,
         "logo_base64": logo_base64,
-        "resposta": dados["resposta"],
+        "resposta": resposta,
         "relacoes_id": relacoes_id,
     })
+    with open("relatorio_debug.html", "w", encoding="utf-8") as f:
+     f.write(html_string)
 
     pdf_file = HTML(string=html_string).write_pdf()
     response = HttpResponse(pdf_file, content_type="application/pdf")
