@@ -4,11 +4,11 @@ from pathlib import Path
 # 🏗️ Diretório base do projeto
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# 🔐 Segurança
-SECRET_KEY = 'django-insecure-74m#x3@r2xj_*5c0v8+-ydzqf@k7gk*qz61&fu#e&=+7w5xy53'  # Troque por uma chave segura
+# 🔐 Segurança via variáveis de ambiente
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-chave-fallback')
 
-DEBUG = True
-ALLOWED_HOSTS = []
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
 
 # 📦 Apps instaladas
 INSTALLED_APPS = [
@@ -84,6 +84,7 @@ USE_TZ = True
 # 📁 Arquivos estáticos
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'blog' / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # 🔑 Redirecionamento de autenticação
 LOGIN_URL = '/login/'
