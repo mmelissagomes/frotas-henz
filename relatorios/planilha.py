@@ -40,6 +40,7 @@ def gerar_matriz_mensal(placa, mes):
     cabecalho = sheet.row_values(1)
     perguntas_checklist = cabecalho[4:27]
 
+    # Inicializa matriz vazia para cada pergunta
     matriz = {pergunta: {} for pergunta in perguntas_checklist}
     observacoes = ""
     nome = ""
@@ -47,7 +48,7 @@ def gerar_matriz_mensal(placa, mes):
     assinatura = ""
     ano = ""
 
-    for idx, registro in enumerate(registros):
+    for idx, registro in enumerate(registros, start=2):
         try:
             placa_atual = str(registro.get(cabecalho[2], "")).strip().upper()
             if placa_atual != placa.upper():
@@ -58,11 +59,12 @@ def gerar_matriz_mensal(placa, mes):
                 continue
 
             dia_str, mes_registro, ano_registro = data_str.split("/")
-            dia = int(dia_str)
-
             if mes_registro != mes:
                 continue
 
+            dia = int(dia_str)
+
+            # ========= LOOP DE PERGUNTAS MOVIDO PRA CÁ =========
             for idx_pergunta, pergunta in enumerate(perguntas_checklist, start=4):
                 resposta_raw = str(registro.get(pergunta, "")).strip()
                 resposta = normalizar_texto(resposta_raw)
@@ -72,19 +74,20 @@ def gerar_matriz_mensal(placa, mes):
                 else:
                     valor_formatado = "—"
 
-            matriz[pergunta][dia] = valor_formatado
+                matriz[pergunta][dia] = valor_formatado
+            # ===================================================
 
-
+            # Preenche dados adicionais somente uma vez por registro válido
             nome = normalizar_texto(registro.get(cabecalho[1], ""))
+
+            # Imagem base64 para marca d'água (primeira encontrada)
             imagem_base64_atual = registro.get(cabecalho[28], "").strip()
             if not imagem_base64 and imagem_base64_atual:
                 imagem_base64 = imagem_base64_atual
 
             # ✅ Assinatura como imagem (Jotform)
             assinatura_raw = str(registro.get(cabecalho[29], "")).strip()
-            if assinatura_raw.startswith("http") and (
-                ".png" in assinatura_raw or ".jpg" in assinatura_raw or ".jpeg" in assinatura_raw
-            ):
+            if assinatura_raw.startswith("http") and any(ext in assinatura_raw for ext in (".png", ".jpg", ".jpeg")):
                 assinatura = assinatura_raw
                 logging.info(f"🖼️ Assinatura recebida como imagem: {assinatura}")
             else:
@@ -93,9 +96,8 @@ def gerar_matriz_mensal(placa, mes):
 
             ano = ano_registro
 
-            obs_extra = registro.get(cabecalho[27], "") if len(cabecalho) > 27 else ""
-            obs_final = registro.get(cabecalho[28], "") if len(cabecalho) > 28 else ""
-            observacoes += f"{data_str} — {obs_extra} {obs_final}\n"
+            obs_extra = registro.get(cabecalho[27], "").strip()
+            observacoes += f"{data_str} — {obs_extra}\n"
 
         except Exception as e:
             logging.error(f"❌ Erro no registro {idx}: {e}")
@@ -122,13 +124,12 @@ def gerar_matriz_mensal_completo(mes):
     placas_encontradas = set()
     dados_por_placa = []
 
-    for idx, registro in enumerate(registros):
+    for idx, registro in enumerate(registros, start=2):
         try:
             data_str = str(registro.get(cabecalho[3], "")).strip()
             if "/" not in data_str:
                 continue
             dia_str, mes_registro, ano_registro = data_str.split("/")
-
             if mes_registro != mes:
                 continue
 
@@ -137,6 +138,7 @@ def gerar_matriz_mensal_completo(mes):
                 continue
 
             placas_encontradas.add(placa)
+            # Reusa a função mensal para cada placa encontrada
             dados_raw = gerar_matriz_mensal(placa, mes)
             dados_por_placa.append(dados_raw)
 
@@ -148,7 +150,6 @@ def gerar_matriz_mensal_completo(mes):
 # 🧠 Constrói dicionário de respostas indexadas
 def construir_resposta_indexada(matriz_respostas, cabecalho, dias):
     perguntas_checklist = cabecalho[4:27]
-
     legenda_resposta = {
         "Conforme": "OK",
         "Não conforme": "NC",
@@ -159,62 +160,46 @@ def construir_resposta_indexada(matriz_respostas, cabecalho, dias):
     }
 
     resposta_indexada = {}
-
     for idx_coluna, pergunta in enumerate(perguntas_checklist, start=4):
         resposta_indexada[idx_coluna] = {}
-
         for dia in dias:
             valor_formatado = matriz_respostas.get(pergunta, {}).get(dia, "")
-            
-            # Extrai apenas a parte da resposta antes dos dois pontos
             resposta_base = valor_formatado.split(":")[0] if ":" in valor_formatado else valor_formatado
-            
-            # Aplica legenda diretamente
-            legenda = legenda_resposta.get(resposta_base, "—")
-            resposta_indexada[idx_coluna][dia] = legenda
-
+            resposta_indexada[idx_coluna][dia] = legenda_resposta.get(resposta_base, "—")
     return resposta_indexada
 
-
+# 🔗 Relaciona ID de envio (coluna 30) com dia
 def relacionar_id_envio_por_dia(sheet):
+    registros = sheet.get_all_records()
+    cabecalho = sheet.row_values(1)
 
-        registros = sheet.get_all_records()
-        cabecalho = sheet.row_values(1)
+    # Garanta que exista COLUNA 30 (índice 29)
+    if len(cabecalho) <= 29:
+        logging.warning(f"⚠️ A planilha tem apenas {len(cabecalho)} colunas, coluna 30 não encontrada.")
+        return []
 
-        if len(cabecalho) < 30:
-            logging.warning(f"⚠️ A planilha possui apenas {len(cabecalho)} colunas. Coluna 30 não encontrada.")
-            return []
+    nome_id_envio = cabecalho[29]
+    nome_data      = cabecalho[3]
 
-        nome_id_envio = cabecalho[30]   # Coluna 30 (índice 29)
-        nome_data = cabecalho[3]        # Coluna 4 (índice 3)
+    relacoes = []
+    for idx, registro in enumerate(registros, start=2):
+        id_envio = str(registro.get(nome_id_envio, "")).strip()
+        data_str = str(registro.get(nome_data, ""),).strip()
 
-        relacoes = []
+        if "/" not in data_str:
+            logging.warning(f"⚠️ Data malformada na linha {idx}: {data_str}")
+            continue
 
-        for idx, registro in enumerate(registros):
-            id_envio = str(registro.get(nome_id_envio, "")).strip()
-            data_str = str(registro.get(nome_data, "")).strip()
+        try:
+            dia = int(data_str.split("/")[0])
+        except ValueError:
+            logging.warning(f"⚠️ Dia inválido na linha {idx}: {data_str}")
+            continue
 
-            if "/" in data_str:
-                try:
-                    dia_str, _, _ = data_str.split("/")
-                    dia = int(dia_str)
-                except ValueError:
-                    dia = None
-                    logging.warning(f"⚠️ Data malformada no registro {idx+2}: {data_str}")
-            else:
-                dia = None
+        if id_envio:
+            relacoes.append({"id_envio": id_envio, "dia": dia})
+            logging.info(f"📦 Linha {idx}: ID={id_envio}, Dia={dia}")
+        else:
+            logging.warning(f"⚠️ ID ausente na linha {idx}")
 
-            if id_envio and dia:
-                relacoes.append({
-                    "id_envio": id_envio,
-                    "dia": dia
-                })
-                logging.info(f"📦 Registro {idx+2}: ID={id_envio}, Dia={dia}")
-            else:
-                logging.warning(f"⚠️ Registro {idx+2} incompleto ou inválido: ID={id_envio}, Data={data_str}")
-            sheet = conectar_planilha()
-            relacoes = relacionar_id_envio_por_dia(sheet)
-            return relacoes
-
-            
- 
+    return relacoes
