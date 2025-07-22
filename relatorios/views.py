@@ -12,7 +12,7 @@ from datetime import datetime
 
 
 def carregar_logo_base64():
-    caminho_logo = "blog/static/images/logo.png"
+    caminho_logo = "blog/static/blog_images/logo_blog.png"
     with open(caminho_logo, "rb") as img_file:
         base64_string = base64.b64encode(img_file.read()).decode("utf-8")
         return "data:image/png;base64," + base64_string
