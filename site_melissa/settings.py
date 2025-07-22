@@ -30,7 +30,6 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -38,6 +37,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # 🌐 URLs raiz
 ROOT_URLCONF = 'site_melissa.urls'
@@ -96,7 +96,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Aponte para onde estão, de fato, os arquivos estáticos:
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'assets'),              # seu assets global
+    #os.path.join(BASE_DIR, 'assets'),              # seu assets global
     #os.path.join(BASE_DIR, 'blog', 'static'),      # varre blog/static/...
     #os.path.join(BASE_DIR, 'relatorios', 'static') # varre relatorios/static/...
 ]
