@@ -83,8 +83,15 @@ USE_TZ = True
 
 # 📁 Arquivos estáticos
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'blog' / 'static']
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'blog' / 'static',
+    BASE_DIR / 'relatorios' / 'static',
+    BASE_DIR / 'static_common',
+]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
 # 🔑 Redirecionamento de autenticação
 LOGIN_URL = '/login/'
