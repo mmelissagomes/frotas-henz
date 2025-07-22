@@ -30,7 +30,7 @@ def normalizar_texto(valor):
     valor = unicodedata.normalize("NFKD", str(valor).strip())
     valor = valor.encode("ASCII", "ignore").decode("utf-8")
     valor = escape(valor).replace('\n', ' ').replace('\r', ' ')
-    return valor.lower()
+    return valor.upper()
 
 # 📄 Gera matriz mensal para uma placa e mês
 def gerar_matriz_mensal(placa, mes):

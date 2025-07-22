@@ -103,6 +103,15 @@
     opacity: 0.14;           /* ajusta a transparência */
     z-index: 0;              
     }
+  .assinatura {
+  text-align: left;
+  margin-top: 20px;
+  }
+  .assinatura img {
+  border: 1px solid #ccc;
+  padding: 2px;
+  }
+
     .rodape {
       font-size: 7px;
       color: #777;
@@ -120,10 +129,19 @@
         <h2 style="margin-top: 0; margin-bottom: 10px;">CHECK-LIST Caminhão Carroceria - Transporte de Pessoas
         </h2>
         <div class="info-linha">
-          <div><strong>NOME:</strong> {{ dados.nome|upper }}</div>
+          <div><strong>NOME:</strong> {{ dados.nome }}</div>
           <div><strong>PLACA:</strong> {{ dados.placa }}</div>
           <div><strong>MÊS:</strong> {{ dados.mes }}</div>
           <div><strong>ANO:</strong> {{ dados.ano }}</div>
+          {% if dados.assinatura|slice:":4" == "http" %}
+  <div class="assinatura">
+    <p><strong>Assinatura:</strong></p>
+    <img src="{{ dados.assinatura }}" alt="Assinatura" style="height: 50px; margin-top: 4px;" />
+  </div>
+{% else %}
+  <p><strong>Assinatura:</strong> Não disponível</p>
+{% endif %}
+
         </div>
       </div>
         <style>
