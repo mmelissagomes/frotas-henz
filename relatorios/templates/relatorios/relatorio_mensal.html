@@ -133,15 +133,6 @@
           <div><strong>PLACA:</strong> {{ dados.placa }}</div>
           <div><strong>MÊS:</strong> {{ dados.mes }}</div>
           <div><strong>ANO:</strong> {{ dados.ano }}</div>
-          {% if dados.assinatura|slice:":4" == "http" %}
-  <div class="assinatura">
-    <p><strong>Assinatura:</strong></p>
-    <img src="{{ dados.assinatura }}" alt="Assinatura" style="height: 50px; margin-top: 4px;" />
-  </div>
-{% else %}
-  <p><strong>Assinatura:</strong> Não disponível</p>
-{% endif %}
-
         </div>
       </div>
         <style>
