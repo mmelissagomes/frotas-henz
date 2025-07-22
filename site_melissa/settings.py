@@ -5,7 +5,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # 🔐 Segurança
-SECRET_KEY = 'sua-chave-secreta-aqui'  # Troque por uma chave segura
+SECRET_KEY = 'django-insecure-74m#x3@r2xj_*5c0v8+-ydzqf@k7gk*qz61&fu#e&=+7w5xy53'  # Troque por uma chave segura
 
 DEBUG = True
 ALLOWED_HOSTS = []
