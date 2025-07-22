@@ -63,10 +63,17 @@ def gerar_matriz_mensal(placa, mes):
             if mes_registro != mes:
                 continue
 
-            for pergunta in perguntas_checklist:
+            for idx_pergunta, pergunta in enumerate(perguntas_checklist, start=4):
                 resposta_raw = str(registro.get(pergunta, "")).strip()
                 resposta = normalizar_texto(resposta_raw)
-                matriz[pergunta][dia] = resposta if resposta else "—"
+
+                if resposta:
+                    valor_formatado = f"{resposta}:{idx_pergunta}:{dia}"
+                else:
+                    valor_formatado = "—"
+
+            matriz[pergunta][dia] = valor_formatado
+
 
             nome = normalizar_texto(registro.get(cabecalho[1], ""))
             imagem_base64_atual = registro.get(cabecalho[28], "").strip()
@@ -142,10 +149,10 @@ def gerar_matriz_mensal_completo(mes):
 def construir_resposta_indexada(matriz_respostas, cabecalho, dias):
     perguntas_checklist = cabecalho[4:27]
     legenda_resposta = {
-        "conforme": "OK",
-        "nao conforme": "NC",
-        "nao aplicavel": "N/A",
-        "nao operadou": "NO",
+        "Conforme": "OK",
+        "Não conforme": "NC",
+        "Não aplicável": "N/A",
+        "Não operadou": "NO",
         "": "—",
         None: "—"
     }
@@ -155,14 +162,13 @@ def construir_resposta_indexada(matriz_respostas, cabecalho, dias):
         resposta[idx] = {}
         for dia in dias:
             valor_raw = matriz_respostas.get(pergunta_texto, {}).get(dia, "")
-            convertido = legenda_resposta.get(normalizar_texto(valor_raw), "—")
+            parte_resposta = valor_raw.split(":")[0] if ":" in valor_raw else valor_raw
+            convertido = legenda_resposta.get(parte_resposta, "—")
             resposta[idx][dia] = convertido
     return resposta
+
 def relacionar_id_envio_por_dia(sheet):
-    """
-    Relaciona o ID de envio (coluna 30) com o dia recebido (coluna 4).
-    """
-    try:
+
         registros = sheet.get_all_records()
         cabecalho = sheet.row_values(1)
 
@@ -202,20 +208,5 @@ def relacionar_id_envio_por_dia(sheet):
             for r in relacoes:
                 return relacoes
 
-    except Exception as e:
-        logging.error(f"❌ Erro ao processar relação ID/Dia: {e}")
-        return []
-
-
-# 🚀 Ponto de entrada para execução direta
-if __name__ == "__main__":
-    try:
-        sheet = conectar_planilha()
-        relacoes = relacionar_id_envio_por_dia(sheet)
-        print("✅ Relações entre ID de envio e dia:")
-        for r in relacoes:
-            print(r)
-    except Exception as e:
-        logging.error(f"❌ Erro: {e}")
-
-
+            
+ 
