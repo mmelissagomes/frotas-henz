@@ -148,6 +148,7 @@ def gerar_matriz_mensal_completo(mes):
 # 🧠 Constrói dicionário de respostas indexadas
 def construir_resposta_indexada(matriz_respostas, cabecalho, dias):
     perguntas_checklist = cabecalho[4:27]
+
     legenda_resposta = {
         "Conforme": "OK",
         "Não conforme": "NC",
@@ -157,15 +158,23 @@ def construir_resposta_indexada(matriz_respostas, cabecalho, dias):
         None: "—"
     }
 
-    resposta = {}
-    for idx, pergunta_texto in enumerate(perguntas_checklist, start=4):
-        resposta[idx] = {}
+    resposta_indexada = {}
+
+    for idx_coluna, pergunta in enumerate(perguntas_checklist, start=4):
+        resposta_indexada[idx_coluna] = {}
+
         for dia in dias:
-            valor_raw = matriz_respostas.get(pergunta_texto, {}).get(dia, "")
-            parte_resposta = valor_raw.split(":")[0] if ":" in valor_raw else valor_raw
-            convertido = legenda_resposta.get(parte_resposta, "—")
-            resposta[idx][dia] = convertido
-    return resposta
+            valor_formatado = matriz_respostas.get(pergunta, {}).get(dia, "")
+            
+            # Extrai apenas a parte da resposta antes dos dois pontos
+            resposta_base = valor_formatado.split(":")[0] if ":" in valor_formatado else valor_formatado
+            
+            # Aplica legenda diretamente
+            legenda = legenda_resposta.get(resposta_base, "—")
+            resposta_indexada[idx_coluna][dia] = legenda
+
+    return resposta_indexada
+
 
 def relacionar_id_envio_por_dia(sheet):
 
@@ -205,8 +214,7 @@ def relacionar_id_envio_por_dia(sheet):
                 logging.warning(f"⚠️ Registro {idx+2} incompleto ou inválido: ID={id_envio}, Data={data_str}")
             sheet = conectar_planilha()
             relacoes = relacionar_id_envio_por_dia(sheet)
-            for r in relacoes:
-                return relacoes
+            return relacoes
 
             
  
