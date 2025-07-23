@@ -15,6 +15,7 @@
     }
 
     body {
+      position: relative;
       font-family: Arial, sans-serif;
       margin-left: 2px;
       margin-right: 2px;
@@ -994,5 +995,20 @@
     <p>Dia {{ item.dia }} — ID: {{ item.id_envio }}</p>
   {% endfor %}
 </div>
+  <div style="
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 50px;        /* largura desejada */
+    height: auto;
+  ">
+    {% if dados.assinatura_b64 %}
+      <img
+        src="{{ dados.assinatura_b64 }}"
+        alt="Assinatura"
+        style="width: 100%; height: auto; display: block;"
+      />
+    {% endif %}
+  </div>
 </body>
 </html>

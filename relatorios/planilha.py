@@ -96,7 +96,8 @@ def gerar_matriz_mensal(placa, mes):
             ano = ano_registro
 
             obs_extra = registro.get(cabecalho[27], "").strip()
-            observacoes += f"{data_str} — {obs_extra}\n"
+            if obs_extra:
+                observacoes += f"{data_str} — {obs_extra}\n"
 
         except Exception as e:
             logging.error(f"❌ Erro no registro {idx}: {e}")
