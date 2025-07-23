@@ -38,7 +38,7 @@ def carregar_logo_base64():
     return f"data:image/png;base64,{b64}"
 
 
-def _injetar_assinatura_b64(dados):
+"""def _injetar_assinatura_b64(dados):
     caminho = "relatorios/static/assinaturas/h4X8UCx.jpeg"
     logging.debug(f"Caminho da assinatura recebido: '{caminho}'")
 
@@ -54,6 +54,7 @@ def _injetar_assinatura_b64(dados):
     except Exception as e:
         logging.warning(f"Erro ao carregar assinatura local: {e}")
         dados["assinatura"] = ""
+        """
 
 
 def pagina_relatorios(request):
