@@ -43,8 +43,8 @@ def _injetar_assinatura_b64(dados):
     data URI Base64, sobrescrevendo dados['assinatura'].
     """
     url = (dados.get("assinatura") or "").strip()
+    dados["assinatura"] = ""
     if not url.lower().startswith("http"):
-        dados["assinatura"] = ""
         return
 
     try:
@@ -52,7 +52,7 @@ def _injetar_assinatura_b64(dados):
         resp.raise_for_status()
         content_type = resp.headers.get("Content-Type", "image/png")
         b64 = base64.b64encode(resp.content).decode("utf-8")
-        dados["assinatura"] = f"data:{content_type};base64,{b64}"
+        dados["assinatura_b64"] = f"data:{content_type};base64,{b64}"
     except Exception as e:
         logging.warning(f"Não foi possível converter assinatura em base64: {e}")
         dados["assinatura"] = ""
