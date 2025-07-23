@@ -44,6 +44,12 @@
 {% endif %}
 
 <h2>Assinatura Base64 (preview)</h2>
+{% if dados.assinatura %}
+  <h4>Assinatura:</h4>
+  <img src="{{ dados.assinatura }}" alt="Assinatura" style="width:200px; height:auto;">
+{% else %}
+  <p>Sem assinatura registrada</p>
+{% endif %}
 <pre>{{ dados.assinatura|slice:":80" }}…</pre>
 
 
