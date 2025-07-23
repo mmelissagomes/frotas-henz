@@ -35,12 +35,17 @@
       <pre>{{ dados.assinatura_b64|slice:":80" }}…</pre>
     </li>
   </ul>
-  {% if dados.assinatura_b64 %}
-    <h3>Preview da Assinatura</h3>
-    <img src="{{ dados.assinatura }}"
-         alt="Assinatura"
-         style="max-width:150px; max-height:100px;">
-  {% endif %}
+  {% if dados.assinatura %}
+  <h3>Preview da Assinatura</h3>
+  <img src="{{ dados.assinatura }}"
+       alt="Assinatura"
+       style="max-width:150px; max-height:100px;">
+{% else %}
+  <p>— sem assinatura —</p>
+{% endif %}
+<h2>Assinatura Base64 (preview)</h2>
+<pre>{{ dados.assinatura|slice:":80" }}…</pre>
+
 
   <h2>Matriz Bruta</h2>
   <pre>{{ dados.matriz }}</pre>
