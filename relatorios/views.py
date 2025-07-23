@@ -2,7 +2,7 @@ import logging
 import base64
 import requests
 import os
-
+from .planilha import _injetar_assinatura_url
 from datetime import datetime
 from calendar import monthrange
 
@@ -37,24 +37,6 @@ def carregar_logo_base64():
     b64 = base64.b64encode(img_bytes).decode("utf-8")
     return f"data:image/png;base64,{b64}"
 
-
-"""def _injetar_assinatura_b64(dados):
-    caminho = "relatorios/static/assinaturas/h4X8UCx.jpeg"
-    logging.debug(f"Caminho da assinatura recebido: '{caminho}'")
-
-    if not os.path.exists(caminho):
-        logging.warning(f"Arquivo de assinatura não encontrado: '{caminho}'")
-        dados["assinatura"] = ""
-        return
-
-    try:
-        with open(caminho, "rb") as f:
-            b64 = base64.b64encode(f.read()).decode("utf-8")
-            dados["assinatura"] = f"data:image/jpeg;base64,{b64}"
-    except Exception as e:
-        logging.warning(f"Erro ao carregar assinatura local: {e}")
-        dados["assinatura"] = ""
-        """
 
 
 def pagina_relatorios(request):
@@ -92,7 +74,9 @@ def gerar_relatorio_mensal_pdf(request, placa, mes):
     )
 
     # 3) Injeta assinatura como data URI
-    #_injetar_assinatura_b64(dados)
+    _injetar_assinatura_url(dados)
+    logging.info(f"Assinatura após injeção: {dados['assinatura'][:50]}")
+
     
     logging.info(f"Assinatura data-URI (início): {dados['assinatura'][:50]}")
 
@@ -138,7 +122,9 @@ def gerar_relatorio_mensal_completo_pdf(request, mes, ano):
         dados["resposta"] = resposta
         logging.info(f"🖊️ Assinatura recebida: {dados['assinatura']}")
 
-       # _injetar_assinatura_b64(dados)
+        _injetar_assinatura_url(dados)
+        logging.info(f"Assinatura após injeção: {dados['assinatura'][:50]}")
+
        
 
         html_placa = render_to_string(
@@ -174,7 +160,9 @@ def debug_relatorio_html(request, placa, mes):
     )
     dados["resposta"] = resposta
 
-   # _injetar_assinatura_b64(dados)
+    _injetar_assinatura_url(dados)
+    logging.info(f"Assinatura após injeção: {dados['assinatura'][:50]}")
+
     logging.info(f"Assinatura data-URI (início): {dados['assinatura'][:50]}")
     logo_base64 = carregar_logo_base64()
 
