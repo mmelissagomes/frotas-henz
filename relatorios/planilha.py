@@ -3,12 +3,23 @@ import unicodedata
 import logging
 from html import escape
 from oauth2client.service_account import ServiceAccountCredentials
+from urllib.parse import urlparse
+import base64
+import requests
+
+def is_image_url(url):
+    path = urlparse(url).path.lower()
+    return path.endswith((".png", ".jpg", ".jpeg"))
+
+
+
 
 # Configura logging para toda a biblioteca
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s — %(levelname)s — %(message)s"
 )
+
 
 def conectar_planilha():
     """
@@ -40,6 +51,33 @@ def normalizar_texto(valor):
     text = escape(text).replace("\n", " ").replace("\r", " ")
     return text.upper()
 
+def _injetar_assinatura_url(dados):
+    """
+    Se 'dados["assinatura"]' for uma URL de imagem (http/https),
+    baixa o conteúdo e converte em Data URI (base64).
+    Caso contrário, mantém o valor — vazio ou já Data URI.
+    """
+    url = dados.get("assinatura", "").strip()
+    if not url.lower().startswith(("http://", "https://")):
+        # não é URL externa: nada a fazer
+        return
+
+    try:
+        resp = requests.get(url, timeout=5)
+        resp.raise_for_status()
+        content_type = resp.headers.get("Content-Type", "")
+        # ex.: "image/png" ou "image/jpeg"
+        if not content_type.startswith("image/"):
+            logging.warning(f"Tipo inesperado na assinatura: {content_type}")
+            return
+
+        b64 = base64.b64encode(resp.content).decode("utf-8")
+        dados["assinatura"] = f"data:{content_type};base64,{b64}"
+        logging.info(f"Assinatura embutida em base64 ({len(b64)} chars)")
+    except Exception as e:
+        logging.warning(f"Não foi possível baixar a assinatura de {url}: {e}")
+        # mantém dados["assinatura"] original ou vazio
+
 
 def gerar_matriz_mensal(placa, mes):
     """
@@ -59,12 +97,12 @@ def gerar_matriz_mensal(placa, mes):
     # perguntas nas colunas 5 a 27 (índices 4–26)
     perguntas = cabecalho[4:27]
 
-    matriz = {pergunta: {} for pergunta in perguntas}
-    observacoes = []
-    nome = ""
-    imagem_base64 = ""
-    assinatura = ""
-    ano = ""
+    matriz       = {pergunta: {} for pergunta in perguntas}
+    observacoes  = []
+    nome         = ""
+    imagem_base64= ""
+    assinatura   = ""
+    ano          = ""
 
     for idx, registro in enumerate(registros, start=2):
         try:
@@ -83,10 +121,7 @@ def gerar_matriz_mensal(placa, mes):
             # popula matriz de respostas
             for col_idx, pergunta in enumerate(perguntas, start=4):
                 raw = str(registro.get(pergunta, "")).strip()
-                if raw:
-                    valor = f"{raw}:{col_idx}:{dia}"
-                else:
-                    valor = "—"
+                valor = f"{raw}:{col_idx}:{dia}" if raw else "—"
                 matriz[pergunta][dia] = valor
 
             # pega nome (normalize)
@@ -101,13 +136,13 @@ def gerar_matriz_mensal(placa, mes):
 
             # URL da assinatura (coluna 30, índice 29)
             raw_sign = str(registro.get(cabecalho[29], "")).strip()
-            if raw_sign.startswith("http") and any(ext in raw_sign for ext in (".png", ".jpg", ".jpeg")):
+            if raw_sign.startswith(("http://", "https://")) and is_image_url(raw_sign):
                 assinatura = raw_sign
-                logging.info(f"🖼️ Assinatura encontrada: {assinatura}")
+                logging.info(f"🖼️ Assinatura encontrada na linha {idx}: {assinatura}")
             else:
                 if not assinatura:
                     assinatura = ""
-                logging.debug(f"linha {idx} sem assinatura válida")
+                logging.debug(f"Linha {idx} sem assinatura válida")
 
             # observações (coluna 28, índice 27)
             obs = str(registro.get(cabecalho[27], "")).strip()
