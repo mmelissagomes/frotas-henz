@@ -91,7 +91,8 @@ def gerar_relatorio_mensal_pdf(request, placa, mes):
     )
 
     # 3) Injeta assinatura como data URI
-    _injetar_assinatura_b64(dados)
+    #_injetar_assinatura_b64(dados)
+    
     logging.info(f"Assinatura data-URI (início): {dados['assinatura'][:50]}")
 
     # 4) Prepara contexto
@@ -134,8 +135,10 @@ def gerar_relatorio_mensal_completo_pdf(request, mes, ano):
             dias=dias
         )
         dados["resposta"] = resposta
+        logging.info(f"🖊️ Assinatura recebida: {dados['assinatura']}")
 
-        _injetar_assinatura_b64(dados)
+       # _injetar_assinatura_b64(dados)
+       
 
         html_placa = render_to_string(
             "relatorios/relatorio_mensal_completo.html",
@@ -170,7 +173,7 @@ def debug_relatorio_html(request, placa, mes):
     )
     dados["resposta"] = resposta
 
-    _injetar_assinatura_b64(dados)
+   # _injetar_assinatura_b64(dados)
     logging.info(f"Assinatura data-URI (início): {dados['assinatura'][:50]}")
     logo_base64 = carregar_logo_base64()
 
