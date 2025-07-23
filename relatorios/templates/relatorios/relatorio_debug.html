@@ -29,20 +29,20 @@
   <pre>{{ dados.imagem_base64|slice:":80" }}…</pre>
 
   <h2>Assinatura</h2>
-  <ul>
-    <li>URL bruta: {{ dados.assinatura }}</li>
-    <li>Base64 (prefixo):<br>
-      <pre>{{ dados.assinatura_b64|slice:":80" }}…</pre>
-    </li>
-  </ul>
-  {% if dados.assinatura %}
+<ul>
+  <li>URL ou caminho original: {{ dados.assinatura_original }}</li>
+  <li>Base64 (prefixo):<br>
+    <pre>{{ dados.assinatura|slice:":80" }}…</pre>
+  </li>
+</ul>
+{% if dados.assinatura %}
   <h3>Preview da Assinatura</h3>
-  <img src="{{ dados.assinatura }}"
-       alt="Assinatura"
+  <img src="{{ dados.assinatura }}" alt="Assinatura"
        style="max-width:150px; max-height:100px;">
 {% else %}
   <p>— sem assinatura —</p>
 {% endif %}
+
 <h2>Assinatura Base64 (preview)</h2>
 <pre>{{ dados.assinatura|slice:":80" }}…</pre>
 
