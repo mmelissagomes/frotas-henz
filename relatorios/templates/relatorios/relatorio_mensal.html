@@ -990,7 +990,8 @@
          <div class="observacoes">
         <strong>OBSERVAÇÕES:</strong><br>
         <pre>{{ dados.observacoes }}</pre>
-        <img src="{{ dados.assinatura }}" alt="Assinatura" style="width:200px;">
+        <img src="{{ assinatura }}" alt="Assinatura" style="width:200px;">
+        <pre>{{ dados.assinatura|slice:":100" }}</pre>
   <p><strong>Rastreio de envio:</strong></p>
   {% for item in relacoes_id %}
     <p>Dia {{ item.dia }} — ID: {{ item.id_envio }}</p>

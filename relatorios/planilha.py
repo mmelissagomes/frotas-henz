@@ -148,11 +148,16 @@ def gerar_matriz_mensal(placa, mes):
             obs = str(registro.get(cabecalho[27], "")).strip()
             if obs:
                 observacoes.append(f"{data_str} — {obs}")
+                
 
             ano = ano_bd
-
+        
         except Exception as e:
             logging.error(f"Erro no registro {idx}: {e}")
+
+            _injetar_assinatura_url({"assinatura": assinatura})
+
+            
 
     return {
         "matriz":        matriz,
