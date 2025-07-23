@@ -55,7 +55,7 @@ def _injetar_assinatura_b64(dados):
         dados["assinatura_b64"] = f"data:{content_type};base64,{b64}"
     except Exception as e:
         logging.warning(f"Não foi possível converter assinatura em base64: {e}")
-        dados["assinatura"] = ""
+        
 
 
 def pagina_relatorios(request):
