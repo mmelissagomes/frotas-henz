@@ -38,25 +38,15 @@ def carregar_logo_base64():
 
 
 def _injetar_assinatura_b64(dados):
-    """
-    Se dados['assinatura'] for uma URL de imagem, baixa e converte em
-    data URI Base64, sobrescrevendo dados['assinatura'].
-    """
-    url = (dados.get("assinatura") or "").strip()
-    dados["assinatura"] = ""
-    if not url.lower().startswith("http"):
-        return
-
+    caminho = dados.get("assinatura", "").strip()
     try:
-        resp = requests.get(url, timeout=10)
-        resp.raise_for_status()
-        content_type = resp.headers.get("Content-Type", "image/png")
-        b64 = base64.b64encode(resp.content).decode("utf-8")
-        dados["assinatura"] = f"data:{content_type};base64,{b64}"
+        with open(caminho, "rb") as f:
+            b64 = base64.b64encode(f.read()).decode("utf-8")
+            dados["assinatura"] = f"data:image/jpeg;base64,{b64}"
     except Exception as e:
-        logging.warning(f"Não foi possível converter assinatura em base64: {e}")
+        logging.warning(f"Erro ao carregar assinatura local: {e}")
         dados["assinatura"] = ""
-        
+
 
 
 def pagina_relatorios(request):

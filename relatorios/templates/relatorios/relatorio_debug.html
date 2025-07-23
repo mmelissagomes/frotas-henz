@@ -133,6 +133,7 @@
     height: 18px;
   }
 
+<<<<<<< HEAD:relatorio_debug.html
   td {
   min-width: 20px;
   height: 15px;
@@ -148,6 +149,45 @@
     margin-top: 1px;
     font-size: 11px;
   }
+=======
+  <h1>DEBUG: Relatório Mensal</h1>
+
+  <h2>Dados Básicos</h2>
+  <ul>
+    <li>Placa: {{ dados.placa }}</li>
+    <li>Nome: {{ dados.nome }}</li>
+    <li>Mês/Ano: {{ dados.mes }}/{{ dados.ano }}</li>
+    <li>Observações:<br>
+      <pre>{{ dados.observacoes }}</pre>
+    </li>
+  </ul>
+
+  <h2>Marca d'água (imagem_base64)</h2>
+  <pre>{{ dados.imagem_base64|slice:":80" }}…</pre>
+
+  <h2>Assinatura</h2>
+  <ul>
+    <li>URL bruta: {{ dados.assinatura }}</li>
+    <li>Base64 (prefixo):<br>
+      <pre>{{ dados.assinatura_b64|slice:":80" }}…</pre>
+    </li>
+  </ul>
+  {% if dados.assinatura_b64 %}
+    <h3>Preview da Assinatura</h3>
+    <img src="{{ dados.assinatura }}"
+         alt="Assinatura"
+         style="max-width:150px; max-height:100px;">
+  {% endif %}
+
+  <h2>Matriz Bruta</h2>
+  <pre>{{ dados.matriz }}</pre>
+
+  <h2>Resposta Indexada</h2>
+  <pre>{{ dados.resposta }}</pre>
+
+  <h2>Relações ID→Dia</h2>
+  <pre>{{ relacoes_id }}</pre>
+>>>>>>> f441cda5a11a320069775149790046abb934eca7:relatorios/templates/relatorios/relatorio_debug.html
 
 </style>
       <table>

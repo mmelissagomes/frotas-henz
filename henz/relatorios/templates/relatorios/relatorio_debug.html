@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>DEBUG Relatório Mensal</title>
+  <style>
+    body { font-family: sans-serif; padding: 16px; }
+    h1, h2 { margin-bottom: 8px; }
+    pre { background: #f5f5f5; padding: 8px; overflow: auto; }
+    ul li { margin-bottom: 4px; }
+    img { border: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+
+  <h1>DEBUG: Relatório Mensal</h1>
+
+  <h2>Dados Básicos</h2>
+  <ul>
+    <li>Placa: {{ dados.placa }}</li>
+    <li>Nome: {{ dados.nome }}</li>
+    <li>Mês/Ano: {{ dados.mes }}/{{ dados.ano }}</li>
+    <li>Observações:<br>
+      <pre>{{ dados.observacoes }}</pre>
+    </li>
+  </ul>
+
+  <h2>Marca d'água (imagem_base64)</h2>
+  <pre>{{ dados.imagem_base64|slice:":80" }}…</pre>
+
+  <h2>Assinatura</h2>
+<ul>
+  <li>URL ou caminho original: {{ dados.assinatura_original }}</li>
+  <li>Base64 (prefixo):<br>
+    <pre>{{ dados.assinatura|slice:":80" }}…</pre>
+  </li>
+</ul>
+{% if dados.assinatura %}
+  <h3>Preview da Assinatura</h3>
+  <img src="{{ dados.assinatura }}" alt="Assinatura"
+       style="max-width:150px; max-height:100px;">
+{% else %}
+  <p>— sem assinatura —</p>
+{% endif %}
+
+<h2>Assinatura Base64 (preview)</h2>
+<pre>{{ dados.assinatura|slice:":80" }}…</pre>
+
+
+  <h2>Matriz Bruta</h2>
+  <pre>{{ dados.matriz }}</pre>
+
+  <h2>Resposta Indexada</h2>
+  <pre>{{ dados.resposta }}</pre>
+
+  <h2>Relações ID→Dia</h2>
+  <pre>{{ relacoes_id }}</pre>
+
+</body>
+</html>
