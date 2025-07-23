@@ -66,11 +66,10 @@ def gerar_matriz_mensal(placa, mes):
 
             # ========= LOOP DE PERGUNTAS MOVIDO PRA CÁ =========
             for idx_pergunta, pergunta in enumerate(perguntas_checklist, start=4):
-                resposta_raw = str(registro.get(pergunta, "")).strip()
-                resposta = normalizar_texto(resposta_raw)
+                resposta_raw = str(registro.get(pergunta, "")).strip()  # mantemos exatamente como no BD
 
-                if resposta:
-                    valor_formatado = f"{resposta}:{idx_pergunta}:{dia}"
+                if resposta_raw:
+                    valor_formatado = f"{resposta_raw}:{idx_pergunta}:{dia}"
                 else:
                     valor_formatado = "—"
 
@@ -164,7 +163,8 @@ def construir_resposta_indexada(matriz_respostas, cabecalho, dias):
         resposta_indexada[idx_coluna] = {}
         for dia in dias:
             valor_formatado = matriz_respostas.get(pergunta, {}).get(dia, "")
-            resposta_base = valor_formatado.split(":")[0] if ":" in valor_formatado else valor_formatado
+            # extrai a parte antes dos dois-pontos
+            resposta_base = valor_formatado.split(":", 1)[0] if ":" in valor_formatado else valor_formatado
             resposta_indexada[idx_coluna][dia] = legenda_resposta.get(resposta_base, "—")
     return resposta_indexada
 
