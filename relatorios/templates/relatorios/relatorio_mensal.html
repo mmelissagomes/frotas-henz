@@ -87,9 +87,22 @@
       text-align: left;
       max-width: 250px;
       white-space: nowrap;
-    }
+    
+  }
+  .assinatura-fixa {
+    position: fixed;
+    bottom: 5px;
+    right: 5px;
+    width: 40px;       /* tamanho final da assinatura */
+    height: auto;
+  }
+  .assinatura-fixa img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
 
-    .observacoes, .assinatura {
+    .observacoes {
       text-align: center;
       margin-top: 5px;
       margin-bottom: 50px;
@@ -104,14 +117,6 @@
     opacity: 0.14;           /* ajusta a transparência */
     z-index: 0;              
     }
-  .assinatura {
-  text-align: left;
-  margin-top: 20px;
-  }
-  .assinatura img {
-  border: 1px solid #ccc;
-  padding: 2px;
-  }
 
     .rodape {
       font-size: 7px;
@@ -987,9 +992,6 @@
          <div class="observacoes">
         <strong>OBSERVAÇÕES:</strong><br>
         <pre>{{ dados.observacoes }}</pre>
-      </div>
-  </div>
-  <div class="rodape">
   <p><strong>Rastreio de envio:</strong></p>
   {% for item in relacoes_id %}
     <p>Dia {{ item.dia }} — ID: {{ item.id_envio }}</p>
