@@ -87,19 +87,6 @@
       text-align: left;
       max-width: 250px;
       white-space: nowrap;
-    
-  }
-  .assinatura-fixa {
-    position: fixed;
-    bottom: 5px;
-    right: 5px;
-    width: 40px;       /* tamanho final da assinatura */
-    height: auto;
-  }
-  .assinatura-fixa img {
-    width: 100%;
-    height: auto;
-    display: block;
   }
 
     .observacoes {
@@ -996,21 +983,9 @@
   {% for item in relacoes_id %}
     <p>Dia {{ item.dia }} — ID: {{ item.id_envio }}</p>
   {% endfor %}
+  {% if dados.assinatura_b64 %}
+  <img src="{{ dados.assinatura_b64 }}" alt="Assinatura" />
+{% endif %}
 </div>
-  <div style="
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 50px;        /* largura desejada */
-    height: auto;
-  ">
-    {% if dados.assinatura_b64 %}
-      <img
-        src="{{ dados.assinatura_b64 }}"
-        alt="Assinatura"
-        style="width: 100%; height: auto; display: block;"
-      />
-    {% endif %}
-  </div>
 </body>
 </html>
