@@ -3,14 +3,49 @@ import unicodedata
 import logging
 from html import escape
 from oauth2client.service_account import ServiceAccountCredentials
+import validators
 from urllib.parse import urlparse
 import base64
 import requests
 
+def _injetar_assinatura_url(dados):
+    url = dados.get("assinatura", "").strip()
+    if not url.lower().startswith(("http://", "https://")):
+        logging.warning("Valor de assinatura não é uma URL")
+        return
+    headers = {"User-Agent": "Mozilla/5.0"}
+    try:
+        resp = requests.get(url, headers=headers, timeout=5)
+        resp.raise_for_status()
+        content_type = resp.headers.get("Content-Type", "")
+        
+        logging.info(f"🔎 Content-Type da assinatura: {content_type}")
+
+        if not content_type.startswith("image/"):
+            logging.warning(f"Tipo inesperado na assinatura: {content_type}")
+            return
+
+        b64 = base64.b64encode(resp.content).decode("utf-8")
+        dados["assinatura"] = f"data:{content_type};base64,{b64}"
+        logging.info(f"Assinatura embutida em base64 ({len(b64)} chars)")
+    except Exception as e:
+        logging.warning(f"Erro ao baixar assinatura de {url}: {e}")
+        dados["assinatura"] = ""  # garantir que valor inválido não fique pendente
+
+
 
 def is_image_url(url):
+    # 1) precisa ser uma URL válida
+    if not validators.url(url):
+        return False
+
+    # 2) só considera extensões de imagem comuns
     path = urlparse(url).path.lower()
-    return path.endswith((".png", ".jpg", ".jpeg"))
+    return path.endswith((
+        ".png", ".jpg", ".jpeg", 
+        ".gif", ".webp"
+    ))
+
 
 
 
@@ -52,30 +87,6 @@ def normalizar_texto(valor):
     text = escape(text).replace("\n", " ").replace("\r", " ")
     return text.upper()
 
-
-def _injetar_assinatura_url(dados):
-    url = dados.get("assinatura", "").strip()
-    if not url.lower().startswith(("http://", "https://")):
-        logging.warning("Valor de assinatura não é uma URL")
-        return
-    headers = {"User-Agent": "Mozilla/5.0"}
-    try:
-        resp = requests.get(url, headers=headers, timeout=5)
-        resp.raise_for_status()
-        content_type = resp.headers.get("Content-Type", "")
-        
-        logging.info(f"🔎 Content-Type da assinatura: {content_type}")
-
-        if not content_type.startswith("image/"):
-            logging.warning(f"Tipo inesperado na assinatura: {content_type}")
-            return
-
-        b64 = base64.b64encode(resp.content).decode("utf-8")
-        dados["assinatura"] = f"data:{content_type};base64,{b64}"
-        logging.info(f"Assinatura embutida em base64 ({len(b64)} chars)")
-    except Exception as e:
-        logging.warning(f"Erro ao baixar assinatura de {url}: {e}")
-        dados["assinatura"] = ""  # garantir que valor inválido não fique pendente
 
 def obter_assinatura_url(registro, cabecalho, idx):
     nome_assinatura = cabecalho[29]
@@ -146,11 +157,11 @@ def gerar_matriz_mensal(placa, mes):
                     imagem_base64 = marca
 
             # URL da assinatura (coluna 30, índice 29)
-            assinatura = obter_assinatura_url(registro, cabecalho, idx)
-            if assinatura:
-                dados_temp = {"assinatura": assinatura}
-            _injetar_assinatura_url(dados_temp)
-            assinatura = dados_temp["assinatura"]
+            raw_url = obter_assinatura_url(registro, cabecalho, idx)
+            if raw_url:
+                temp = {"assinatura": raw_url}
+                _injetar_assinatura_url(temp)
+                assinatura = temp.get("assinatura", "")
 
 
             # observações (coluna 28, índice 27)
