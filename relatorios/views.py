@@ -73,60 +73,56 @@ def _injetar_assinatura_b64(dados):
             logging.warning(f"Não foi possível converter assinatura em base64: {e}")
 
 
+# views.py
+
+from calendar import monthrange
+from django.http       import HttpResponse
+from django.template.loader import render_to_string
+from weasyprint        import HTML
+
+from relatorios.planilha import gerar_matriz_mensal
+from relatorios.views    import construir_resposta_indexada
+
 def gerar_relatorio_mensal_pdf(request, placa, mes):
-    """
-    Gera PDF de checklist para uma única placa no mês especificado.
-
-    Se chamado com ?format=html, retorna o HTML renderizado para
-    facilitar debug em produção.
-    """
-    debug_html = request.GET.get("format") == "html"
-
     # 1) Dados iniciais
     logo_base64 = carregar_logo_base64()
     dados       = gerar_matriz_mensal(placa.strip().upper(), mes)
-    dias        = list(range(1, 32))
-    relacoes_id = relacionar_id_envio_por_dia(conectar_planilha())
+    ano, mes_int = int(dados["ano"]), int(dados["mes"])
+    total_dias   = monthrange(ano, mes_int)[1]
+    dias         = list(range(1, total_dias + 1))
+    relacoes_id  = relacionar_id_envio_por_dia(conectar_planilha())
 
-    # 2) Constrói a matriz de respostas
-    dados["resposta"] = construir_resposta_indexada(
+    # 2) Constrói o dict coluna→{dia→sigla}
+    resposta = construir_resposta_indexada(
         matriz_respostas=dados["matriz"],
         cabecalho=dados["cabecalho"],
         dias=dias
     )
-
-    # 3) Converte assinatura para Base64 (se houver URL)
+    
+    # 3) Injeta assinatura em base64 (se houver)
     _injetar_assinatura_b64(dados)
 
-    # 4) Renderiza o HTML do relatório
-    html_string = render_to_string(
-        "relatorios/relatorio_mensal.html",
-        {
-            "dados":       dados,
-            "dias":        dias,
-            "logo_base64": logo_base64,
-            "relacoes_id": relacoes_id,
-        }
-    )
+    # 4) Prepara um único contexto, incluindo 'resposta'
+    contexto = {
+        "dados":       dados,
+        "resposta":    resposta,      # <-- aqui
+        "dias":        dias,
+        "logo_base64": logo_base64,
+        "relacoes_id": relacoes_id,
+    }
 
-    # 5) Modo debug: retorna HTML puro
-    if debug_html:
+    # 5) Renderiza o HTML (debug ou PDF)
+    html_string = render_to_string("relatorios/relatorio_mensal.html", contexto)
+
+    if request.GET.get("format") == "html":
         return HttpResponse(html_string, content_type="text/html")
 
-    # 6) Debug opcional: grava o HTML em disco para inspeção
-    try:
-        with open("relatorio_debug.html", "w", encoding="utf-8") as f:
-            f.write(html_string)
-        logging.info("relatorio_debug.html gerado com sucesso.")
-    except Exception as e:
-        logging.error(f"Erro ao gravar relatorio_debug.html: {e}")
-
-    # 7) Converte em PDF e retorna resposta
     pdf_bytes = HTML(string=html_string).write_pdf()
     response  = HttpResponse(pdf_bytes, content_type="application/pdf")
     filename  = f"relatorio_{dados['placa']}_{mes}.pdf"
     response["Content-Disposition"] = f"inline; filename={filename}"
     return response
+
 
 
 def gerar_relatorio_mensal_completo_pdf(request, mes, ano):
