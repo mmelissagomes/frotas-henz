@@ -7,6 +7,7 @@ from urllib.parse import urlparse
 import base64
 import requests
 
+
 def is_image_url(url):
     path = urlparse(url).path.lower()
     return path.endswith((".png", ".jpg", ".jpeg"))
@@ -51,22 +52,20 @@ def normalizar_texto(valor):
     text = escape(text).replace("\n", " ").replace("\r", " ")
     return text.upper()
 
+
 def _injetar_assinatura_url(dados):
-    """
-    Se 'dados["assinatura"]' for uma URL de imagem (http/https),
-    baixa o conteúdo e converte em Data URI (base64).
-    Caso contrário, mantém o valor — vazio ou já Data URI.
-    """
     url = dados.get("assinatura", "").strip()
     if not url.lower().startswith(("http://", "https://")):
-        # não é URL externa: nada a fazer
+        logging.warning("Valor de assinatura não é uma URL")
         return
-
+    headers = {"User-Agent": "Mozilla/5.0"}
     try:
-        resp = requests.get(url, timeout=5)
+        resp = requests.get(url, headers=headers, timeout=5)
         resp.raise_for_status()
         content_type = resp.headers.get("Content-Type", "")
-        # ex.: "image/png" ou "image/jpeg"
+        
+        logging.info(f"🔎 Content-Type da assinatura: {content_type}")
+
         if not content_type.startswith("image/"):
             logging.warning(f"Tipo inesperado na assinatura: {content_type}")
             return
@@ -75,8 +74,19 @@ def _injetar_assinatura_url(dados):
         dados["assinatura"] = f"data:{content_type};base64,{b64}"
         logging.info(f"Assinatura embutida em base64 ({len(b64)} chars)")
     except Exception as e:
-        logging.warning(f"Não foi possível baixar a assinatura de {url}: {e}")
-        # mantém dados["assinatura"] original ou vazio
+        logging.warning(f"Erro ao baixar assinatura de {url}: {e}")
+        dados["assinatura"] = ""  # garantir que valor inválido não fique pendente
+
+def obter_assinatura_url(registro, cabecalho, idx):
+    nome_assinatura = cabecalho[29]
+    assinatura_url = str(registro.get(nome_assinatura, "")).replace("\n", "").strip()
+
+    if assinatura_url.startswith(("http://", "https://")) and is_image_url(assinatura_url):
+        logging.info(f"🖼️ Assinatura encontrada na linha {idx}: {assinatura_url}")
+        return assinatura_url
+    else:
+        logging.debug(f"Linha {idx} sem assinatura válida")
+        return ""
 
 
 def gerar_matriz_mensal(placa, mes):
@@ -93,6 +103,7 @@ def gerar_matriz_mensal(placa, mes):
     sheet = conectar_planilha()
     registros = sheet.get_all_records()
     cabecalho = sheet.row_values(1)
+    
 
     # perguntas nas colunas 5 a 27 (índices 4–26)
     perguntas = cabecalho[4:27]
@@ -135,14 +146,12 @@ def gerar_matriz_mensal(placa, mes):
                     imagem_base64 = marca
 
             # URL da assinatura (coluna 30, índice 29)
-            raw_sign = str(registro.get(cabecalho[29], "")).strip()
-            if raw_sign.startswith(("http://", "https://")) and is_image_url(raw_sign):
-                assinatura = raw_sign
-                logging.info(f"🖼️ Assinatura encontrada na linha {idx}: {assinatura}")
-            else:
-                if not assinatura:
-                    assinatura = ""
-                logging.debug(f"Linha {idx} sem assinatura válida")
+            assinatura = obter_assinatura_url(registro, cabecalho, idx)
+            if assinatura:
+                dados_temp = {"assinatura": assinatura}
+            _injetar_assinatura_url(dados_temp)
+            assinatura = dados_temp["assinatura"]
+
 
             # observações (coluna 28, índice 27)
             obs = str(registro.get(cabecalho[27], "")).strip()
@@ -154,8 +163,6 @@ def gerar_matriz_mensal(placa, mes):
         
         except Exception as e:
             logging.error(f"Erro no registro {idx}: {e}")
-
-            _injetar_assinatura_url({"assinatura": assinatura})
 
             
 
