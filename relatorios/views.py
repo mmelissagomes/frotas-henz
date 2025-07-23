@@ -3,9 +3,10 @@ import base64
 import requests
 
 from datetime import datetime
+from calendar import monthrange
 
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.http            import HttpResponse
+from django.shortcuts       import render
 from django.template.loader import render_to_string
 
 from weasyprint import HTML
@@ -36,6 +37,27 @@ def carregar_logo_base64():
     return f"data:image/png;base64,{b64}"
 
 
+def _injetar_assinatura_b64(dados):
+    """
+    Se dados['assinatura'] for uma URL de imagem, baixa e converte em
+    data URI Base64, sobrescrevendo dados['assinatura'].
+    """
+    url = (dados.get("assinatura") or "").strip()
+    if not url.lower().startswith("http"):
+        dados["assinatura"] = ""
+        return
+
+    try:
+        resp = requests.get(url, timeout=10)
+        resp.raise_for_status()
+        content_type = resp.headers.get("Content-Type", "image/png")
+        b64 = base64.b64encode(resp.content).decode("utf-8")
+        dados["assinatura"] = f"data:{content_type};base64,{b64}"
+    except Exception as e:
+        logging.warning(f"Não foi possível converter assinatura em base64: {e}")
+        dados["assinatura"] = ""
+
+
 def pagina_relatorios(request):
     """
     Exibe a página com selects de mês e ano.
@@ -54,35 +76,6 @@ def pagina_relatorios(request):
     })
 
 
-def _injetar_assinatura_b64(dados):
-    """
-    Se dados['assinatura'] for URL de imagem, baixa e gera dados['assinatura_b64'].
-    Em falha, assinatura_b64 fica string vazia.
-    """
-    assinatura_url = dados.get("assinatura", "") or ""
-    dados["assinatura_b64"] = ""
-
-    if assinatura_url.startswith("http"):
-        try:
-            resp = requests.get(assinatura_url, timeout=10)
-            resp.raise_for_status()
-            content_type = resp.headers.get("Content-Type", "image/png")
-            b64 = base64.b64encode(resp.content).decode("utf-8")
-            dados["assinatura_b64"] = f"data:{content_type};base64,{b64}"
-        except Exception as e:
-            logging.warning(f"Não foi possível converter assinatura em base64: {e}")
-
-
-# views.py
-
-from calendar import monthrange
-from django.http       import HttpResponse
-from django.template.loader import render_to_string
-from weasyprint        import HTML
-
-from relatorios.planilha import gerar_matriz_mensal
-from relatorios.views    import construir_resposta_indexada
-
 def gerar_relatorio_mensal_pdf(request, placa, mes):
     # 1) Dados iniciais
     logo_base64 = carregar_logo_base64()
@@ -98,46 +91,44 @@ def gerar_relatorio_mensal_pdf(request, placa, mes):
         cabecalho=dados["cabecalho"],
         dias=dias
     )
-    
-    # 3) Injeta assinatura em base64 (se houver)
+
+    # 3) Injeta assinatura como data URI
     _injetar_assinatura_b64(dados)
 
-    # 4) Prepara um único contexto, incluindo 'resposta'
+    # 4) Prepara contexto
     contexto = {
         "dados":       dados,
-        "resposta":    resposta,      # <-- aqui
+        "resposta":    resposta,
         "dias":        dias,
         "logo_base64": logo_base64,
         "relacoes_id": relacoes_id,
     }
 
-    # 5) Renderiza o HTML (debug ou PDF)
-    html_string = render_to_string("relatorios/relatorio_mensal.html", contexto)
-
+    # 5) Debug HTML
     if request.GET.get("format") == "html":
-        return HttpResponse(html_string, content_type="text/html")
+        return HttpResponse(
+            render_to_string("relatorios/relatorio_mensal.html", contexto),
+            content_type="text/html"
+        )
 
-    pdf_bytes = HTML(string=html_string).write_pdf()
-    response  = HttpResponse(pdf_bytes, content_type="application/pdf")
-    filename  = f"relatorio_{dados['placa']}_{mes}.pdf"
-    response["Content-Disposition"] = f"inline; filename={filename}"
+    # 6) Geração do PDF
+    html_string = render_to_string("relatorios/relatorio_mensal.html", contexto)
+    pdf_bytes    = HTML(string=html_string).write_pdf()
+    response     = HttpResponse(pdf_bytes, content_type="application/pdf")
+    filename     = f"relatorio_{dados['placa']}_{mes}.pdf"
+    response["Content-Disposition"] = f'inline; filename="{filename}"'
     return response
 
 
-
 def gerar_relatorio_mensal_completo_pdf(request, mes, ano):
-    """
-    Gera PDF contendo relatórios individuais de todas as placas no mês.
-    """
     # 1) Dados iniciais
     logo_base64 = carregar_logo_base64()
     todos_raw, dias = gerar_matriz_mensal_completo(mes)
     relacoes_id = relacionar_id_envio_por_dia(conectar_planilha())
 
-    # 2) Renderiza cada relatório em fragmentos de HTML
+    # 2) Renderiza cada relatório
     placas_html = []
     for dados in todos_raw:
-        # respostas
         resposta = construir_resposta_indexada(
             matriz_respostas=dados["matriz"],
             cabecalho=dados["cabecalho"],
@@ -145,10 +136,8 @@ def gerar_relatorio_mensal_completo_pdf(request, mes, ano):
         )
         dados["resposta"] = resposta
 
-        # assinatura em Base64
         _injetar_assinatura_b64(dados)
 
-        # fragmento
         html_placa = render_to_string(
             "relatorios/relatorio_mensal_completo.html",
             {
@@ -161,27 +150,18 @@ def gerar_relatorio_mensal_completo_pdf(request, mes, ano):
         )
         placas_html.append(html_placa)
 
-    # 3) Une as páginas e gera PDF
+    # 3) Gera PDF único
     combined_html = "\n".join(placas_html)
-
-    # Debug: salva HTML completo (opcional)
-    try:
-        with open("relatorio_completo_debug.html", "w", encoding="utf-8") as f:
-            f.write(combined_html)
-        logging.info("relatorio_completo_debug.html gerado com sucesso.")
-    except Exception as e:
-        logging.error(f"Erro ao gravar relatorio_completo_debug.html: {e}")
-
-    pdf_bytes = HTML(string=combined_html).write_pdf()
-    response = HttpResponse(pdf_bytes, content_type="application/pdf")
-    filename = f"relatorio_mensal_completo_{mes}_{ano}.pdf"
-    response["Content-Disposition"] = f"inline; filename={filename}"
+    pdf_bytes     = HTML(string=combined_html).write_pdf()
+    response      = HttpResponse(pdf_bytes, content_type="application/pdf")
+    filename      = f"relatorio_mensal_completo_{mes}_{ano}.pdf"
+    response["Content-Disposition"] = f'inline; filename="{filename}"'
     return response
 
+
 def debug_relatorio_html(request, placa, mes):
-    # monta tudo igual à view de PDF, mas retorna só o HTML:
-    dados = gerar_matriz_mensal(placa.upper(), mes)
-    dias = list(range(1,32))
+    dados      = gerar_matriz_mensal(placa.upper(), mes)
+    dias       = list(range(1, 32))
     relacoes_id = relacionar_id_envio_por_dia(conectar_planilha())
 
     resposta = construir_resposta_indexada(
@@ -190,6 +170,7 @@ def debug_relatorio_html(request, placa, mes):
         dias=dias
     )
     dados["resposta"] = resposta
+
     _injetar_assinatura_b64(dados)
     logo_base64 = carregar_logo_base64()
 
@@ -200,4 +181,3 @@ def debug_relatorio_html(request, placa, mes):
         "relacoes_id": relacoes_id,
     })
     return HttpResponse(html, content_type="text/html")
-

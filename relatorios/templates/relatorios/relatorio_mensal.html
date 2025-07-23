@@ -983,10 +983,10 @@
   {% for item in relacoes_id %}
     <p>Dia {{ item.dia }} — ID: {{ item.id_envio }}</p>
   {% endfor %}
-  <p>URL da assinatura: {{ dados.assinatura }}</p>
-<p>Base64 iniciando com: {{ dados.assinatura_b64|slice:":30" }}</p>
-  {% if dados.assinatura_b64 %}
-  <img src="{{ dados.assinatura_b64 }}" alt="Assinatura" />
+  {% if dados.assinatura %}
+  <img src="{{ dados.assinatura }}" alt="Assinatura" style="max-width:200px;" />
+{% else %}
+  <p>— sem assinatura —</p>
 {% endif %}
 </div>
 </body>
