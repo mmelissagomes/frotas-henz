@@ -1,6 +1,7 @@
 import logging
 import base64
 import requests
+import os
 
 from datetime import datetime
 from calendar import monthrange
@@ -38,7 +39,14 @@ def carregar_logo_base64():
 
 
 def _injetar_assinatura_b64(dados):
-    caminho = dados.get("assinatura", "").strip()
+    caminho = "relatorios/static/assinaturas/h4X8UCx.jpeg"
+    logging.debug(f"Caminho da assinatura recebido: '{caminho}'")
+
+    if not os.path.exists(caminho):
+        logging.warning(f"Arquivo de assinatura não encontrado: '{caminho}'")
+        dados["assinatura"] = ""
+        return
+
     try:
         with open(caminho, "rb") as f:
             b64 = base64.b64encode(f.read()).decode("utf-8")
@@ -46,7 +54,6 @@ def _injetar_assinatura_b64(dados):
     except Exception as e:
         logging.warning(f"Erro ao carregar assinatura local: {e}")
         dados["assinatura"] = ""
-
 
 
 def pagina_relatorios(request):
