@@ -1,14 +1,22 @@
-import os
 from pathlib import Path
+from dotenv import load_dotenv
+import os
 
-# 🏗️ Diretório base do projeto
+# Caminho para o .env
+load_dotenv()  
+
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
+ALLOWED_HOSTS = os.getenv(
+    'ALLOWED_HOSTS',
+    'localhost,127.0.0.1,mmelissagomes991.pythonanywhere.com'
+).split(',')
+
 
 # 🔐 Segurança via variáveis de ambiente
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-chave-fallback')
 
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
 
 # 📦 Apps instaladas
 INSTALLED_APPS = [
@@ -46,8 +54,10 @@ ROOT_URLCONF = 'site_melissa.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'blog' / 'templates'],
-        'DIRS': [BASE_DIR / 'relatorios' / 'templates'],
+        'DIRS': [
+            BASE_DIR / 'blog' / 'templates',
+            BASE_DIR / 'relatorios' / 'templates',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -87,17 +97,14 @@ USE_TZ = True
 # 📁 Arquivos estáticos
 
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# Estáticos
+STATIC_URL  = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Aponte para onde estão, de fato, os arquivos estáticos:
-STATICFILES_DIRS = [
-    #os.path.join(BASE_DIR, 'assets'),              # seu assets global
-    #os.path.join(BASE_DIR, 'blog', 'static'),      # varre blog/static/...
-    #os.path.join(BASE_DIR, 'relatorios', 'static') # varre relatorios/static/...
-]
+# Mídia (uploads)
+MEDIA_URL  = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-MEDIA_URL = '/media/'
 
 
 # 🔑 Redirecionamento de autenticação
