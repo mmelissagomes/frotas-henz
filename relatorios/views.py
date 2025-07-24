@@ -1,8 +1,7 @@
 import logging
 import base64
 import requests
-import os
-from .planilha import _injetar_assinatura_url
+
 from datetime import datetime
 from calendar import monthrange
 
@@ -39,20 +38,23 @@ def carregar_logo_base64():
 
 
 def _injetar_assinatura_b64(dados):
-    caminho = "relatorios/static/assinaturas/h4X8UCx.jpeg"
-    logging.debug(f"Caminho da assinatura recebido: '{caminho}'")
-
-    if not os.path.exists(caminho):
-        logging.warning(f"Arquivo de assinatura não encontrado: '{caminho}'")
-        dados["assinatura"] = ""
-        return
-
+    caminho = dados.get("assinatura", "").strip()
     try:
-        with open(caminho, "rb") as f:
-            b64 = base64.b64encode(f.read()).decode("utf-8")
-            dados["assinatura"] = f"data:image/jpeg;base64,{b64}"
+        if caminho.startswith("http"):
+            response = requests.get(caminho, timeout=5)
+            if response.status_code == 200:
+                img_bytes = response.content
+            else:
+                raise Exception(f"Erro HTTP: {response.status_code}")
+        else:
+            with open(caminho, "rb") as f:
+                img_bytes = f.read()
+
+        ext = "jpeg" if caminho.lower().endswith((".jpg", ".jpeg")) else "png"
+        b64 = base64.b64encode(img_bytes).decode("utf-8")
+        dados["assinatura"] = f"data:image/{ext};base64,{b64}"
     except Exception as e:
-        logging.warning(f"Erro ao carregar assinatura local: {e}")
+        logging.warning(f"Erro ao carregar assinatura: {e}")
         dados["assinatura"] = ""
 
 
@@ -92,10 +94,7 @@ def gerar_relatorio_mensal_pdf(request, placa, mes):
     )
 
     # 3) Injeta assinatura como data URI
-    _injetar_assinatura_url(dados)
-    logging.info(f"Assinatura após injeção: {dados['assinatura'][:50]}")
-
-    
+    _injetar_assinatura_b64(dados)
     logging.info(f"Assinatura data-URI (início): {dados['assinatura'][:50]}")
 
     # 4) Prepara contexto
@@ -138,12 +137,8 @@ def gerar_relatorio_mensal_completo_pdf(request, mes, ano):
             dias=dias
         )
         dados["resposta"] = resposta
-        logging.info(f"🖊️ Assinatura recebida: {dados['assinatura']}")
 
-        _injetar_assinatura_url(dados)
-        logging.info(f"Assinatura após injeção: {dados['assinatura'][:50]}")
-
-       
+        _injetar_assinatura_b64(dados)
 
         html_placa = render_to_string(
             "relatorios/relatorio_mensal_completo.html",
@@ -178,9 +173,7 @@ def debug_relatorio_html(request, placa, mes):
     )
     dados["resposta"] = resposta
 
-    _injetar_assinatura_url(dados)
-    logging.info(f"Assinatura após injeção: {dados['assinatura'][:50]}")
-
+    _injetar_assinatura_b64(dados)
     logging.info(f"Assinatura data-URI (início): {dados['assinatura'][:50]}")
     logo_base64 = carregar_logo_base64()
 

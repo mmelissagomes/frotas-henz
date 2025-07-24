@@ -7,16 +7,9 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
-ALLOWED_HOSTS = os.getenv(
-    'ALLOWED_HOSTS',
-    'localhost,127.0.0.1,mmelissagomes991.pythonanywhere.com'
-).split(',')
-
-
-# 🔐 Segurança via variáveis de ambiente
-SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-chave-fallback')
-
+SECRET_KEY = os.environ.get('SECRET_KEY', 'valor-fallback')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost').split(',')
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 # 📦 Apps instaladas
 INSTALLED_APPS = [

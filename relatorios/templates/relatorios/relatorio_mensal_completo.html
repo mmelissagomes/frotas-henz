@@ -977,7 +977,11 @@
          <div class="observacoes">
         <strong>OBSERVAÇÕES:</strong><br>
         <pre>{{ dados.observacoes }}</pre>
+          <p>URL da assinatura: {{ dados.assinatura }}</p>
+<p>Base64 iniciando com: {{ dados.assinatura_b64|slice:":30" }}</p>
+  {% if dados.assinatura_b64 %}
+  <img src="{{ dados.assinatura_b64 }}" alt="Assinatura" />
+{% endif %}
       </div>
-  </div>
 </body>
 </html>
