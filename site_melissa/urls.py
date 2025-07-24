@@ -2,7 +2,9 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from django.conf.urls.static import static
-
+from django.conf import settings
+from django.conf.urls.static import static
+from django.urls import path, include
 from site_melissa import settings
 
 
@@ -21,6 +23,8 @@ urlpatterns = [
 
     # 🏠 Home conectada à app "blog"
     path('', include('blog.urls')),
+    path('', include('relatorios.urls')),
+
 
     # 🔗 Apps conectadas
     path('veiculos/', include('veiculos.urls')),
@@ -28,4 +32,8 @@ urlpatterns = [
     path('relatorios/', include('relatorios.urls')),
 ]
 
-if settings.DEBUG:urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.MEDIA_URL,
+        document_root=settings.MEDIA_ROOT
+    )
