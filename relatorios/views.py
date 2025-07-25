@@ -84,7 +84,13 @@ def gerar_relatorio_mensal_pdf(request, placa, mes):
     ano, mes_int = int(dados["ano"]), int(dados["mes"])
     total_dias   = monthrange(ano, mes_int)[1]
     dias         = list(range(1, total_dias + 1))
-    relacoes_id  = relacionar_id_envio_por_dia(conectar_planilha())
+    todos_ids = relacionar_id_envio_por_dia(conectar_planilha())
+    placa_normalizada = placa.strip().upper()
+    ids_filtrados = [
+    r for r in todos_ids
+    if r["placa"] == placa_normalizada and r["dia"] in dias
+]
+
 
     # 2) Constrói o dict coluna→{dia→sigla}
     resposta = construir_resposta_indexada(
@@ -103,7 +109,7 @@ def gerar_relatorio_mensal_pdf(request, placa, mes):
         "resposta":    resposta,
         "dias":        dias,
         "logo_base64": logo_base64,
-        "relacoes_id": relacoes_id,
+        "relacoes_id": ids_filtrados,
     }
 
     # 5) Debug HTML
@@ -139,6 +145,11 @@ def gerar_relatorio_mensal_completo_pdf(request, mes, ano):
         dados["resposta"] = resposta
 
         _injetar_assinatura_b64(dados)
+        placa_atual = str(dados.get("placa", "")).strip().upper()
+        ids_filtrados = [
+        r for r in relacoes_id
+        if r["dia"] in dias and r.get("placa") == placa_atual
+        ]
 
         html_placa = render_to_string(
             "relatorios/relatorio_mensal_completo.html",
@@ -146,8 +157,9 @@ def gerar_relatorio_mensal_completo_pdf(request, mes, ano):
                 "dados":        dados,
                 "dias":         dias,
                 "logo_base64":  logo_base64,
-                "relacoes_id":  relacoes_id,
+                "relacoes_id":  ids_filtrados,
                 "quebra_pagina": True,
+                "resposta": dados["resposta"],
             }
         )
         placas_html.append(html_placa)

@@ -131,6 +131,75 @@ def gerar_matriz_mensal(placa, mes):
         "cabecalho":     cabecalho,
     }
 
+def gerar_matriz_mensal_a_partir_de_registros(registros_filtrados, placa, mes, cabecalho):
+    """
+    Gera a matriz mensal usando registros filtrados já fornecidos,
+    sem fazer nova conexão com a planilha.
+    """
+    perguntas = cabecalho[4:27]  # colunas 5 a 27
+    
+
+    matriz = {pergunta: {} for pergunta in perguntas}
+    observacoes = []
+    nome = ""
+    imagem_base64 = ""
+    assinatura = ""
+    ano = ""
+
+    for idx, registro in enumerate(registros_filtrados, start=2):
+        try:
+            data_str = str(registro.get(cabecalho[3], "")).strip()
+            if "/" not in data_str:
+                continue
+
+            dia_str, mes_bd, ano_bd = data_str.split("/")
+            if mes_bd != mes:
+                continue
+
+            dia = int(dia_str)
+
+            for col_idx, pergunta in enumerate(perguntas, start=4):
+                raw = str(registro.get(pergunta, "")).strip()
+                if raw:
+                    valor = f"{raw}:{col_idx}:{dia}"
+                else:
+                    valor = "—"
+                matriz[pergunta][dia] = valor
+
+            if not nome:
+                nome = normalizar_texto(registro.get(cabecalho[1], ""))
+
+            if not imagem_base64:
+                marca = str(registro.get(cabecalho[28], "")).strip()
+                if marca:
+                    imagem_base64 = marca
+
+            raw_sign = str(registro.get(cabecalho[29], "")).strip()
+            if raw_sign.startswith("http") and any(ext in raw_sign for ext in (".png", ".jpg", ".jpeg")):
+                assinatura = raw_sign
+            elif not assinatura:
+                assinatura = ""
+
+            obs = str(registro.get(cabecalho[27], "")).strip()
+            if obs:
+                observacoes.append(f"{data_str} - {obs.upper()} |")
+
+            ano = ano_bd
+
+        except Exception as e:
+            logging.error(f"Erro no registro {idx}: {e}")
+
+    return {
+        "matriz":        matriz,
+        "nome":          nome,
+        "placa":         placa.upper(),
+        "mes":           mes,
+        "ano":           ano,
+        "observacoes":   "\n".join(observacoes),
+        "imagem_base64": imagem_base64,
+        "assinatura":    assinatura,
+        "cabecalho":     cabecalho,
+    }
 
 def gerar_matriz_mensal_completo(mes):
     """
@@ -153,13 +222,16 @@ def gerar_matriz_mensal_completo(mes):
         if mes_bd != mes:
             continue
 
-        placa_bd = str(registro.get(cabecalho[2], "")).strip().upper()
-        if not placa_bd or placa_bd in placas:
+        placa_raw = registro.get(cabecalho[2], "")
+        placa_bd = str(placa_raw).strip().upper()
+
+        placa_formatada = str(registro.get(cabecalho[2], "")).strip().upper()
+        if not placa_formatada or placa_formatada in placas:
             continue
 
-        placas.add(placa_bd)
-        resultados.append(gerar_matriz_mensal(placa_bd, mes))
-
+        placas.add(placa_formatada)
+        registros_placa = [r for r in todos if str(r.get(cabecalho[2], "")).strip().upper() == placa_bd and str(r.get(cabecalho[3], "")).strip().split("/")[1] == mes]
+        resultados.append(gerar_matriz_mensal_a_partir_de_registros(registros_placa, placa_formatada, mes, cabecalho))
     return resultados, dias
 
 
@@ -205,11 +277,14 @@ def relacionar_id_envio_por_dia(sheet):
 
     nome_id = cabecalho[30]
     nome_data = cabecalho[3]
+    nome_placa = cabecalho[2]
     relacoes = []
 
     for idx, reg in enumerate(registros, start=2):
         raw_id = str(reg.get(nome_id, "")).strip()
         data_str = str(reg.get(nome_data, "")).strip()
+        placa = str(reg.get(nome_placa, "")).strip().upper()
+
         if "/" not in data_str or not raw_id:
             continue
 
@@ -219,7 +294,7 @@ def relacionar_id_envio_por_dia(sheet):
             logging.warning(f"Dia inválido na linha {idx}: {data_str}")
             continue
 
-        relacoes.append({"id_envio": raw_id, "dia": dia})
+        relacoes.append({"id_envio": raw_id, "dia": dia, "placa": placa})
         logging.debug(f"-> Linha {idx}: id_envio={raw_id}, dia={dia}")
 
     return relacoes

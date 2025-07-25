@@ -87,21 +87,91 @@
       text-align: left;
       max-width: 250px;
       white-space: nowrap;
-  }
 
-    .observacoes {
-      text-align: center;
-      margin-top: 5px;
-      margin-bottom: 50px;
-      font-size: 13px;
-    }
+  }
+  .grupo-final {
+  page-break-inside: avoid;
+  break-inside: avoid;
+  display: block;
+  margin-top: 1px;
+}
+ .linha-final {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  page-break-inside: avoid;
+}
+.lado-esquerdo {
+  flex: 1;
+  padding: 0;
+  margin: 0;
+  page-break-inside: avoid;
+}
+
+.lado-direito {
+  max-width: 25%;
+  text-align: right;
+}
+
+.bloco-assinatura {
+  width: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px;
+  page-break-inside: avoid;
+}
+.assinatura-img {
+  max-width: 160px;
+  margin-bottom: 10px;
+}
+
+.linha-assinatura {
+  border-top: 1px solid #444;
+  width: 120px;
+  margin: 4px 0;
+}
+
+.legenda-assinatura {
+  font-size: 10px;
+  color: #444;
+  text-align: center;
+  margin: 2px 0;
+}
+
+.rastreios {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+}
+
+
+.rastreio {
+  font-size: 9px;
+  white-space: nowrap;
+  padding: 1px 0;
+}
+
+
+.observacoes {
+  width: 100%;
+  margin: 0;
+  font-size: 10px;
+  line-height: 1.2;
+  padding: 0;
+}
+
+    
     .logo-fundo {
-    position: absolute;
-    top: 41%;
+    position: fixed;
+    top: 7.9cm;
     left: 66%;
     transform: translate(-50%, -50%);
     width: 1460px;
-    opacity: 0.14;           /* ajusta a transparência */
+    opacity: 0.05;           /* ajusta a transparência */
     z-index: 0;              
     }
 
@@ -111,6 +181,31 @@
       margin-top: 5px;
       text-align: center;
     }
+
+.bloco-final {
+  position: relative;
+  max-height: 450px;   /* ajustável conforme seu layout total */
+  overflow: hidden;    /* evita estouros no render */
+}
+.bloco-esquerdo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0;
+  margin: 0;
+  gap: 4px; /* controla o espaçamento entre observações e rastreio */
+}
+
+.placa-section {
+  page-break-before: always;
+}
+span {
+  display: inline;
+  max-width: 880px;
+  word-wrap: break-word;
+}
+
   </style>
 </head>
 <body>
@@ -121,17 +216,6 @@
         </div>
         <h2 style="margin-top: 0; margin-bottom: 10px;">CHECK-LIST Caminhão Carroceria - Transporte de Pessoas
         </h2>
-{% if dados.assinatura %}
-  <h4>Assinatura:</h4>
-  <img
-    src="{{ dados.assinatura.url }}"
-    alt="Assinatura"
-    style="width:200px; height:auto;"
-  >
-{% else %}
-  <p>Sem assinatura registrada</p>
-{% endif %}
-
         <div class="info-linha">
           <div><strong>NOME:</strong> {{ dados.nome }}</div>
           <div><strong>PLACA:</strong> {{ dados.placa }}</div>
@@ -159,7 +243,6 @@
     margin-top: 1px;
     font-size: 11px;
   }
-
 </style>
       <table>
         <tr>
@@ -987,20 +1070,42 @@
   <strong>NO</strong> = Não Operadou |
   <strong>—</strong> = Sem resposta
 </div>
-         <div class="observacoes">
-        <strong>OBSERVAÇÕES:</strong><br>
-        <pre>{{ dados.observacoes }}</pre>
-        <img src="{{ assinatura }}" alt="Assinatura" style="width:200px;">
-        <pre>{{ dados.assinatura|slice:":100" }}</pre>
-  <p><strong>Rastreio de envio:</strong></p>
-  {% for item in relacoes_id %}
-    <p>Dia {{ item.dia }} — ID: {{ item.id_envio }}</p>
-  {% endfor %}
-  {% if dados.assinatura %}
-  <img src="{{ dados.assinatura }}" alt="Assinatura" style="max-width:200px;" />
-{% else %}
-  <p>— sem assinatura —</p>
-{% endif %}
+<div class="grupo-final">
+<div class="bloco-final">
+  <div class="linha-final">
+    <div class="lado-esquerdo">
+  <div class="bloco-esquerdo">
+<div class="observacoes">
+  <strong>OBSERVAÇÕES:</strong>
+  <br>
+  <span>
+      {{ dados.observacoes }}
+  </span>
+</div>
+
+<div class="rastreios">
+  <strong>RASTREIO DE ENVIO:</strong>
+  <span>
+    {% for item in relacoes_id %}
+      Dia {{ item.dia }} — ID: {{ item.id_envio }}{% if not loop.last %} | {% endif %}
+    {% endfor %}
+  </span>
+</div>
+
+  </div>
+</div>
+
+    <div class="bloco-assinatura">
+      {% if dados.assinatura %}
+        <img src="{{ dados.assinatura }}" alt="Assinatura" class="assinatura-img" />
+        <div class="linha-assinatura"></div>
+        <p class="legenda-assinatura">ASSINATURA</p>
+      {% else %}
+        <p>— sem assinatura —</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
 </div>
 </body>
 </html>
